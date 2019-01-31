@@ -1,17 +1,9 @@
 cmake_minimum_required(VERSION 3.5.2 FATAL_ERROR)
 
-#################
-# Build options #
-#################
-
-if (NOT DEFINED BUILD_SHARED_LIBS)
-    option(BUILD_SHARED_LIBS "Build as shared library" ON)
-endif()
 # When set to OFF, the library will be built as a static library
-if (${BUILD_SHARED_LIBS})
+if (DEFINED BUILD_SHARED_LIBS AND ${BUILD_SHARED_LIBS})
     add_definitions(-D${PROJECT_NAME}_BUILD_SHARED_LIBS)
 endif()
-
 
 # Usage of Qt libraries (optional)
 # --------------------------------
