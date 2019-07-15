@@ -17,45 +17,54 @@ set(THIS_FILE_DIR ${CMAKE_CURRENT_LIST_DIR})
 #
 #The encoded number is equal to the `encoded string cypher * 1000 + label version number`
 #
+#Note: the label version number cannot be bigger than 3 digits, otherwise it will be set to zero
+#
 #Parameters:
-#TWEAK_VERSION_STRING[in] - case insensitive tweak version string (e.g. RC.2, alpha.193, beta.23)
-#ENCODED_NUMBER[out] - the calculated encoded number with maximum of 4 digits
+#TWEAK_VERSION_STRING[in] - case insensitive tweak version string (e.g. RC.2, alpha.193, beta.23, alpha, 456)
+#ENCODED_NUMBER[out] - the calculated encoded number with maximum of 4 digits (e.g. respectively: 9002, 1193, 3023, 1000, 456
 macro(encode_semantic_version_label TWEAK_VERSION_STRING ENCODED_NUMBER)
-    string(REGEX MATCHALL "[-a-zA-Z]+|[0-9]+" TWEAK_VERSION_STRING_LIST ${TWEAK_VERSION_STRING})
-    list(GET TWEAK_VERSION_STRING_LIST 0 LABEL_STR)
-    list(GET TWEAK_VERSION_STRING_LIST 1 LABEL_VERSION)
-
-    if(LABEL_STR)
-        string(TOLOWER ${LABEL_STR} ${LABEL_STR})
-
-        string(COMPARE EQUAL "pre" ${LABEL_STR} LABEL_STR_PRE)
-        string(COMPARE EQUAL "pre-alpha" ${LABEL_STR} LABEL_STR_PRE_ALPHA)
-        string(COMPARE EQUAL "alpha" ${LABEL_STR} LABEL_STR_ALPHA)
-        string(COMPARE EQUAL "beta" ${LABEL_STR} LABEL_STR_BETA)
-        string(COMPARE EQUAL "rc" ${LABEL_STR} LABEL_STR_RC)
-
-        if(LABEL_STR_PRE OR LABEL_STR_PRE_ALPHA)
-            set(SUM 1)
-        elseif(LABEL_STR_ALPHA)
-            set(SUM 2)
-        elseif(LABEL_STR_BETA)
-            set(SUM 3)
-        elseif(LABEL_STR_RC)
-            set(SUM 9)
-        else()
-            message(WARNING "Unknown tweak version label string ${LABEL_STR},
-                             either rename the version or process this new label.")
-            set(SUM 5)  # set SUM to mid value, to avoid burning
-        endif()
-    else()
+    set(TWEAK_VERSION_STRING "${TWEAK_VERSION_STRING}")  # make empty string if not defined
+    if(TWEAK_VERSION_STRING STREQUAL "")
         set(SUM 0)
-    endif()
+    else()
+        # Parse the string part at the beginning, if any
+        string(REGEX MATCH "^[-a-zA-Z]+" LABEL_STR ${TWEAK_VERSION_STRING})
 
-    if(NOT LABEL_VERSION)
-        set(LABEL_VERSION 0)
-    endif()
+        if(NOT CMAKE_MATCH_0)
+            set(STRING_VALUE 0)
+        else()
+            string(TOLOWER ${LABEL_STR} ${LABEL_STR})
 
-    MATH(EXPR SUM "${SUM}*1000+${LABEL_VERSION}")
+            string(COMPARE EQUAL "pre" ${LABEL_STR} LABEL_STR_PRE)
+            string(COMPARE EQUAL "pre-alpha" ${LABEL_STR} LABEL_STR_PRE_ALPHA)
+            string(COMPARE EQUAL "alpha" ${LABEL_STR} LABEL_STR_ALPHA)
+            string(COMPARE EQUAL "beta" ${LABEL_STR} LABEL_STR_BETA)
+            string(COMPARE EQUAL "rc" ${LABEL_STR} LABEL_STR_RC)
+
+            if(LABEL_STR_PRE OR LABEL_STR_PRE_ALPHA)
+                set(STRING_VALUE 1)
+            elseif(LABEL_STR_ALPHA)
+                set(STRING_VALUE 2)
+            elseif(LABEL_STR_BETA)
+                set(STRING_VALUE 3)
+            elseif(LABEL_STR_RC)
+                set(STRING_VALUE 9)
+            else()
+                message(WARNING "Unknown tweak version label '${LABEL_STR}', either update the git tag or process this new label.")
+                set(STRING_VALUE 5)  # set to mid value, to avoid burning
+            endif()
+        endif()
+
+        # Parse the version part at the end, if any
+        string(REGEX MATCH "[0-9]+$" LABEL_VERSION ${TWEAK_VERSION_STRING})
+
+        if(NOT CMAKE_MATCH_0)
+            set(LABEL_VERSION 0)
+        endif()
+
+        MATH(EXPR SUM "${STRING_VALUE}*1000+${LABEL_VERSION}")
+
+    endif()
 
     # Set output parameter
     set(${ENCODED_NUMBER} ${SUM})
@@ -80,8 +89,9 @@ endif()
 
 set(IS_APPLICABLE_RESOURCE (NOT ${ISLIBRARY} OR (${ISSHAREDLIBRARY} AND ${ISLIBRARY})))
 
-if(WIN32 AND NOT UNIX AND ${IS_APPLICABLE_RESOURCE})
 
+if(WIN32 AND NOT UNIX AND ${IS_APPLICABLE_RESOURCE})
+    message(STATUS "Resource info will be added for ${PROJECT}")
     if(NOT CMAKE_BUILD_TYPE MATCHES Debug)
         # Finish creating the relevant data for the RC file.
         get_git_head_revision(GIT_REFSPEC GIT_COMMIT_HASH)
@@ -108,7 +118,7 @@ if(WIN32 AND NOT UNIX AND ${IS_APPLICABLE_RESOURCE})
         set(PRODUCT_VER_MINOR ${${CMAKE_PROJECT_NAME}_VERSION_MINOR})
         set(PRODUCT_VER_PATCH ${${CMAKE_PROJECT_NAME}_VERSION_PATCH})
 
-        encode_semantic_version_label(${${CMAKE_PROJECT_NAME}_VERSION_TWEAK} PRODUCT_VER_EXTRA)
+        encode_semantic_version_label("${${CMAKE_PROJECT_NAME}_VERSION_TWEAK}" PRODUCT_VER_EXTRA)
     else()
         set(PRODUCT_VER_MAJOR ${FILE_VER_MAJOR})
         set(PRODUCT_VER_MINOR ${FILE_VER_MINOR})
@@ -125,7 +135,6 @@ if(WIN32 AND NOT UNIX AND ${IS_APPLICABLE_RESOURCE})
         # First we will try to filter out the mingw bin directory using some list operations
         # Make a list
         STRING(REPLACE "/" ";" QT_LIB_DIR_LIST ${QT_LIBRARY_DIR})
-
         # Remove the last item
         LIST(REMOVE_ITEM QT_LIB_DIR_LIST "lib")
         # Get the length of the list and the last element
@@ -153,10 +162,10 @@ if(WIN32 AND NOT UNIX AND ${IS_APPLICABLE_RESOURCE})
     elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 
         # add resource.rc to the source list of the dll or exe
-        list(APPEND ${RC_APPEND_LIST_NAME} ${CMAKE_CURRENT_BINARY_DIR}/resource.rc)
+        list(APPEND ${RC_APPEND_LIST_NAME} ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT}_resource.rc)
 
         # fill in the appropriate information into resource.rc
-        configure_file(${THIS_FILE_DIR}/resource.rc.in ${CMAKE_CURRENT_BINARY_DIR}/resource.rc)
+        configure_file(${THIS_FILE_DIR}/resource.rc.in ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT}_resource.rc)
     endif()
 endif(WIN32 AND NOT UNIX AND ${IS_APPLICABLE_RESOURCE})
 endmacro()
