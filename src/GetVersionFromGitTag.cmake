@@ -31,8 +31,14 @@
 #
 # Author: Nuno Fachada
 
+if (NOT VERSION_UPDATE_FROM_GIT)
+	return()
+endif()
+
+find_package(Git)
+
 # Check if git is found...
-if (GIT_FOUND AND VERSION_UPDATE_FROM_GIT)
+if (GIT_FOUND)
 	message(STATUS "Get version from git tag...")
 
 	# Get last tag from git
