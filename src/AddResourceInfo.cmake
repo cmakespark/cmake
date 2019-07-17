@@ -61,6 +61,9 @@ macro(encode_semantic_version_label TWEAK_VERSION_STRING ENCODED_NUMBER)
         if(NOT CMAKE_MATCH_0)
             set(LABEL_VERSION 0)
         endif()
+        if(LABEL_VERSION GREATER 999)
+            set(LABEL_VERSION 0)
+        endif()
 
         MATH(EXPR SUM "${STRING_VALUE}*1000+${LABEL_VERSION}")
 
