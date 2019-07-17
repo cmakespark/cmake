@@ -10,8 +10,8 @@ set(THIS_FILE_DIR ${CMAKE_CURRENT_LIST_DIR})
 #The tweak version string is defined by a label string and its version (e.g. "RC.2" in v2.3.1-RC.2+21.ef12c8)
 #The strings are encoded as 1 cypher:
 #  - pre or pre-alpha: 1
-#  - alpha: 7
-#  - beta: 8
+#  - alpha: 2
+#  - beta: 3
 #  - rc: 9
 #Otherwise the cypher is 5, and a warning is sent
 #
