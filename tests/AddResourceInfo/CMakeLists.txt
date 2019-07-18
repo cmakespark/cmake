@@ -41,7 +41,7 @@ set(EXPECTED_TWEAK_VERSION_VALUES
 list(LENGTH INPUT_TWEAK_VERSION_STRINGS NBR_OF_INPUTS)
 list(LENGTH EXPECTED_TWEAK_VERSION_VALUES NBR_OF_EXPECTED_VALUES)
 if (NOT (NBR_OF_INPUTS EQUAL NBR_OF_EXPECTED_VALUES))
-    message(FATAL_ERROR "Their should be an equal number of input strings and expected values")
+    message(FATAL_ERROR "There should be an equal number of input strings and expected values")
 endif()
 
 math(EXPR SIZE "${NBR_OF_INPUTS} - 1")
