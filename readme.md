@@ -136,21 +136,17 @@ This buildsys also allows to:
 ## Retrieve project version git
 
 This section explains how to read out the semantic version (https://semver.org/spec/v2.0.0.html) from a git commit.
-It will retrieve the latest git tag and adds the commit hash.
 
 To enable, add the following snippet to your CMakeLists.txt:
 
 ```cmake
-find_package(Git REQUIRED)
 set(VERSION_UPDATE_FROM_GIT TRUE)
-
-include(GetVersionFromGitTag)
-
 ```
+This will retrieve the latest git tag and adds the commit hash.
 Additionally, this will write a file `VERSION` in the `CMakeLists.txt`s directory.
 
-In case the git executable is not found on the current computer, it will read the version from the `VERSION` file.
-Note that the early first build requires you to run the `find_package` command to create this file.
+In case the git executable is not found on the current machine, it will read the version from the `VERSION` file.
+Note that the early first build requires a VERSION file if git is not installed.
 
 The label string and its version (e.g. "RC.2" in v2.3.1-RC.2+21.ef12c8) are encoded as the fourth number of the version.
 This number is equal to the sum of
