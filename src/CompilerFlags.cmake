@@ -210,15 +210,28 @@ if (NOT WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 endif (NOT WIN32)
 
-# Adds reverted compiler flags for compiling the target with rtti
+# Adds reverted compiler flags for compiling with FakeIt to the specified target
 #   _TARGET       - The target to revert compile flag for
-macro(target_compile_with_rtti _TARGET)
+macro(target_uses_fakeit _TARGET)
     if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
         target_compile_options(${_TARGET} PRIVATE
             -frtti
             -fexceptions
+            -Wno-effc++
+            -Wno-non-virtual-dtor
+            -Wno-old-style-cast
+            -Wno-sign-conversion
         )
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         target_compile_options(${_TARGET} PRIVATE /GR)  # ignore generated warning
+    endif()
+
+    # Additions for Clang only
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        target_compile_options(${_TARGET} PRIVATE
+            -Wno-shorten-64-to-32
+            -Wno-deprecated
+            -Wno-zero-length-array
+        )
     endif()
 endmacro()
