@@ -31,8 +31,14 @@
 #
 # Author: Nuno Fachada
 
+if (NOT VERSION_UPDATE_FROM_GIT)
+	return()
+endif()
+
+find_package(Git)
+
 # Check if git is found...
-if (GIT_FOUND AND VERSION_UPDATE_FROM_GIT)
+if (GIT_FOUND)
 	message(STATUS "Get version from git tag...")
 
 	# Get last tag from git
@@ -83,13 +89,13 @@ if (GIT_FOUND AND VERSION_UPDATE_FROM_GIT)
 	# Save version to file (which will be used when Git is not available
 	# or VERSION_UPDATE_FROM_GIT is disabled)
 	file(WRITE ${CMAKE_SOURCE_DIR}/VERSION ${${PROJECT_NAME}_VERSION_STRING_FULL}
-		" " ${${PROJECT_NAME}_VERSION_STRING}
-		" " ${${PROJECT_NAME}_VERSION_MAJOR}
-		" " ${${PROJECT_NAME}_VERSION_MINOR}
-		" " ${${PROJECT_NAME}_VERSION_PATCH}
-		" " ${${PROJECT_NAME}_VERSION_TWEAK}
-		" " ${${PROJECT_NAME}_VERSION_AHEAD}
-		" " ${${PROJECT_NAME}_VERSION_GIT_SHA})
+		"|" ${${PROJECT_NAME}_VERSION_STRING}
+		"|" ${${PROJECT_NAME}_VERSION_MAJOR}
+		"|" ${${PROJECT_NAME}_VERSION_MINOR}
+		"|" ${${PROJECT_NAME}_VERSION_PATCH}
+		"|" ${${PROJECT_NAME}_VERSION_TWEAK}
+		"|" ${${PROJECT_NAME}_VERSION_AHEAD}
+		"|" ${${PROJECT_NAME}_VERSION_GIT_SHA})
 
 	message("Version file (over)written: ${CMAKE_SOURCE_DIR}/VERSION")
 
@@ -97,7 +103,7 @@ else()
 
 	# Git not available, get version from file
 	file(STRINGS ${CMAKE_SOURCE_DIR}/VERSION ${PROJECT_NAME}_VERSION_LIST)
-	string(REPLACE " " ";" ${PROJECT_NAME}_VERSION_LIST ${${PROJECT_NAME}_VERSION_LIST})
+	string(REPLACE "|" ";" ${PROJECT_NAME}_VERSION_LIST ${${PROJECT_NAME}_VERSION_LIST})
 	# Set partial versions
 	list(GET ${PROJECT_NAME}_VERSION_LIST 0 ${PROJECT_NAME}_VERSION_STRING_FULL)
 	list(GET ${PROJECT_NAME}_VERSION_LIST 1 ${PROJECT_NAME}_VERSION_STRING)
