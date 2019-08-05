@@ -46,9 +46,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
                         "-Wunreachable-code"
                         "-mfpmath=sse"                      # needed on Debian 32-bit to get high precision floating point operations
                         "-msse2"                            # needed on Debian 32-bit to get high precision floating point operations
-
-                        "-Weffc++"                          # warnings from Effective C++ book;
-
+#                        "-Weffc++"                         # warnings from Effective C++ book; Disabled due to false positive on member init
                         "-Werror"
                         "-Wformat-nonliteral"               # const char* argumements could not langer be passed due to this entry
 #                       "-Winline"                          # gcc on Linux seems to decide frequently not to inline, and warns about it.
