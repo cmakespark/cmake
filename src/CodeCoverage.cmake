@@ -50,9 +50,10 @@ if(NOT CODE_COVERAGE_NO_DEFAULT_EXCLUDES)
         "*test_*"
         "*tests*"
         "*qrc_*"
-        "ui_*.h"
-        "catch.hpp"
-        "fakeit.hpp"
+        "*ui_*.h"
+        "*catch.hpp"
+        "*fakeit.hpp"
+        "*contract.cpp"
     )
 endif()
 
@@ -77,9 +78,6 @@ if(CODE_COVERAGE)
     add_custom_command(TARGET "coverage-report"
         COMMAND ${LCOV_EXECUTABLE} --quiet --capture --directory . --base-directory ${CMAKE_SOURCE_DIR} --no-external -o ${COVERAGE_FILE} ${LCOV_REDIRECT}
         COMMAND ${LCOV_EXECUTABLE} --quiet --remove ${COVERAGE_FILE} ${CODE_COVERAGE_EXCLUDES} -o ${COVERAGE_FILE}
-        COMMAND ${LCOV_EXECUTABLE} --quiet --remove ${COVERAGE_FILE} \*test_\* -o ${COVERAGE_FILE}
-        COMMAND ${LCOV_EXECUTABLE} --quiet --remove ${COVERAGE_FILE} \*catch.hpp\* -o ${COVERAGE_FILE}
-        COMMAND ${LCOV_EXECUTABLE} --quiet --remove ${COVERAGE_FILE} \*contract.cpp\* -o ${COVERAGE_FILE}
         COMMAND ${LCOV_EXECUTABLE} --list ${COVERAGE_FILE}
         COMMAND ${LCOV_EXECUTABLE} --summary ${COVERAGE_FILE}
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
