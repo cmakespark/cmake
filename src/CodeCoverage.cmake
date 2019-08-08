@@ -17,8 +17,8 @@
 # 5. Run the application(s) where you want to analyse the coverage
 #
 # 6. Generate the report by calling one of these targets:
+#    - coverage-report (string table output)
 #    - coverage-html (HTML format)
-#    - coverage-xml (cobertura XML format)
 #
 # Requirements: gcov and gcovr
 
@@ -28,13 +28,10 @@ function(ENABLE_CODE_COVERAGE)
     elseif( NOT CMAKE_BUILD_TYPE STREQUAL "Debug" )
         message(FATAL "Code coverage results with an optimized (non-Debug) build may be misleading. Code coverage will not run." )
     else()
-        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -fprofile-arcs -ftest-coverage")
-        if (CMAKE_COMPILER_IS_GNUCXX AND NOT UNIX)
-            link_libraries(debug gcov)
-        endif(CMAKE_COMPILER_IS_GNUCXX AND NOT UNIX)
-        if (NOT WIN32)
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 --coverage")
+        if(NOT WIN32)
             set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fPIC")
-        endif (NOT WIN32)
+        endif(NOT WIN32)
 
         set(CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG} PARENT_SCOPE)
 
