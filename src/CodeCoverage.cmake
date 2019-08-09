@@ -83,6 +83,7 @@ if(CODE_COVERAGE)
     add_custom_target("coverage-html" DEPENDS "coverage-report")
     add_custom_command(TARGET "coverage-html"
         COMMAND ${GENHTML_EXECUTABLE} ${COVERAGE_FILE} --show-details -o coverage
+        COMMAND ${CMAKE_COMMAND} -E tar cf CodeCoverage.zip --format=zip -- coverage
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         COMMENT "Create code coverage html report"
         VERBATIM)
