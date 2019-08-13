@@ -185,6 +185,14 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
                         "/EHsc-"    # disable exceptions
                         "/GR-"      # disable RTTI
     )
+
+    # Enable generation of pdb files for release builds to be able to debug crashses
+    if(CMAKE_BUILD_TYPE MATCHES Release)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zi")
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /INCREMENTAL:NO /DEBUG /OPT:REF /OPT:ICF")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /INCREMENTAL:NO /DEBUG /OPT:REF /OPT:ICF")
+        set(COMPILE_PDB_OUTPUT_DIR ${CMAKE_BINARY_DIR})
+    endif(CMAKE_BUILD_TYPE MATCHES Release)
 endif()
 
 # Allow workarounds for specific frameworks 
