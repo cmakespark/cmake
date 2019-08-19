@@ -38,7 +38,7 @@ endif()
 find_package(Git)
 
 # Check if git is found...
-if (GIT_FOUND)
+if (GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
 	message(STATUS "Get version from git tag...")
 
 	# Get last tag from git
