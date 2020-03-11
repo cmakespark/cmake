@@ -7,8 +7,19 @@ set_target_properties(${TARGET_NAME} PROPERTIES
   VERSION ${FULL_VERSION}
   SOVERSION ${SO_VERSION}
   PUBLIC_HEADER "${${TARGET_NAME}_PUBLIC_HEADERS}"
-  PRIVATE_HEADER "${${TARGET_NAME}_PRIVATE_HEADERS}"
 )
+
+# Adding PDB files to package.
+if(MSVC)
+    if(${BUILD_SHARED_LIBS})
+        install(FILES $<TARGET_PDB_FILE:${TARGET_NAME}> DESTINATION bin OPTIONAL)
+    else()
+        set_target_properties(${TARGET_NAME} PROPERTIES
+            COMPILE_PDB_NAME ${TARGET_NAME}
+            COMPILE_PDB_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+        install(FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${TARGET_NAME}.pdb DESTINATION ${LIB_INSTALL_DIR} OPTIONAL)
+    endif()
+endif()
 
 ################################################################
 # Create and export config packages for usage within this tree #
@@ -53,7 +64,6 @@ install(TARGETS ${TARGET_NAME} EXPORT ${TARGET_NAME}Targets
   LIBRARY DESTINATION ${LIB_INSTALL_DIR}
   ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
   PUBLIC_HEADER DESTINATION ${INCLUDE_INSTALL_DIR}
-  PRIVATE_HEADER DESTINATION ${INCLUDE_INSTALL_DIR}/private
 )
 
 # Export the import targets
