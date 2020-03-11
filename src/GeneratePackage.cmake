@@ -9,6 +9,18 @@ set_target_properties(${TARGET_NAME} PROPERTIES
   PUBLIC_HEADER "${${TARGET_NAME}_PUBLIC_HEADERS}"
 )
 
+# Adding PDB files to package.
+if(MSVC)
+    if(${BUILD_SHARED_LIBS})
+        install(FILES $<TARGET_PDB_FILE:${TARGET_NAME}> DESTINATION bin OPTIONAL)
+    else()
+        set_target_properties(${TARGET_NAME} PROPERTIES
+            COMPILE_PDB_NAME ${TARGET_NAME}
+            COMPILE_PDB_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+        install(FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${TARGET_NAME}.pdb DESTINATION ${LIB_INSTALL_DIR} OPTIONAL)
+    endif()
+endif()
+
 ################################################################
 # Create and export config packages for usage within this tree #
 ################################################################
