@@ -1,7 +1,10 @@
-find_program(VALGRIND valgrind)
-if(VALGRIND)
-    message(STATUS "Unit tests will be profiled on memory leaks using valgrind: ${VALGRIND}")
-endif()
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    # Only run valgrind for Debug builds.
+    find_program(VALGRIND valgrind)
+    if(VALGRIND)
+        message(STATUS "Unit tests will be profiled on memory leaks using valgrind: ${VALGRIND}")
+    endif(VALGRIND)
+endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 macro(add_qt_test TEST_NAME SRCS)
     find_package(Qt5Test REQUIRED)
