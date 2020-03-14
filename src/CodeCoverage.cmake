@@ -92,6 +92,7 @@ if(CODE_COVERAGE)
 
     add_custom_target(coverage-check DEPENDS coverage-report)
     add_custom_command(TARGET coverage-check
+        COMMAND chmod +x ${CMAKE_CURRENT_LIST_DIR}/coverage-check.sh
         COMMAND ${CMAKE_CURRENT_LIST_DIR}/coverage-check.sh ${MIN_COVERAGE}
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         COMMENT "Check code coverage"
