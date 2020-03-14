@@ -88,4 +88,13 @@ if(CODE_COVERAGE)
         COMMENT "Create code coverage html report"
         VERBATIM)
 
+    set(MIN_COVERAGE "0" CACHE STRING "Minimum required coverage")
+
+    add_custom_target(coverage-check DEPENDS coverage-report)
+    add_custom_command(TARGET coverage-check
+        COMMAND ${CMAKE_CURRENT_LIST_DIR}/coverage-check.sh ${MIN_COVERAGE}
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        COMMENT "Check code coverage"
+        VERBATIM)
+
 endif(CODE_COVERAGE)
