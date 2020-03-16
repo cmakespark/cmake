@@ -26,7 +26,8 @@ set(SOURCES
     manifest/AddManifest.cmake
     manifest/dll.manifest.in
     manifest/exe.manifest.in
-    resource.rc.in)
+    resource.rc.in
+    coverage-check.sh)
 
 add_custom_target(cmakespark ALL
     COMMAND ${CMAKE_COMMAND} -E tar cf ${CMAKE_BINARY_DIR}/cmakespark.zip --format=zip -- ${SOURCES}
