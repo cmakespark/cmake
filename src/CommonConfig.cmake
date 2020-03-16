@@ -73,11 +73,6 @@ endif (APPLE)
 # Switch testing on
 # -----------------
 enable_testing()
-if (NOT TARGET check)
-    add_custom_target(check)
-endif()
-add_custom_target(check-${PROJECT_BASE_NAME} COMMAND ${CMAKE_CTEST_COMMAND})
-add_dependencies(check check-${PROJECT_BASE_NAME})
 if (DEFINED QTDIR)
     include(AddQtTest)
 endif (DEFINED QTDIR)
@@ -87,11 +82,9 @@ if (MANUAL_TESTS_ENABLED)
 endif()
 
 # Code analysis with cppcheck
-# ---------------------------
 include(Cppcheck)
 
 # Code coverage with gcov
-# -----------------------
 include(CodeCoverage)
 
 # Common compiler flags
