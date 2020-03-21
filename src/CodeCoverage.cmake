@@ -22,23 +22,6 @@
 #
 # Requirements: gcov and gcovr
 
-function(ENABLE_CODE_COVERAGE)
-    if(NOT CMAKE_COMPILER_IS_GNUCXX AND NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        message(WARNING "Compiler is not GNU gcc or Clang! Code coverage disabled.")
-    elseif( NOT CMAKE_BUILD_TYPE STREQUAL "Debug" )
-        message(FATAL "Code coverage results with an optimized (non-Debug) build may be misleading. Code coverage will not run." )
-    else()
-        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 --coverage")
-        if(NOT WIN32)
-            set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fPIC")
-        endif(NOT WIN32)
-
-        set(CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG} PARENT_SCOPE)
-
-        message(STATUS "Code Coverage Enabled")
-    endif()
-endfunction()
-
 if(NOT CODE_COVERAGE_NO_DEFAULT_EXCLUDES)
     list(APPEND CODE_COVERAGE_EXCLUDES
         "*moc_*"
@@ -56,10 +39,14 @@ endif()
 
 option(CODE_COVERAGE "Code coverage" OFF)
 if(CODE_COVERAGE)
-    find_package(Gcov REQUIRED)
-    find_package(Lcov REQUIRED)
-
-    enable_code_coverage()
+    if(NOT CMAKE_COMPILER_IS_GNUCXX AND NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        message(FATAL "Compiler is not GNU gcc or Clang! Code coverage not possible.")
+    elseif( NOT CMAKE_BUILD_TYPE STREQUAL "Debug" )
+        message(FATAL "Code coverage results with an optimized (non-Debug) build may be misleading. Code coverage will not run." )
+    else()
+        find_package(Gcov REQUIRED)
+        find_package(Lcov REQUIRED)
+    endif()
 
     file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/coverage)
 

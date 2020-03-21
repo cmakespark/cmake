@@ -94,6 +94,16 @@ macro(createlib)
         target_link_libraries(${CREATELIB_NAME} PUBLIC ${dep})
     endforeach(dep)
 
+    # Add options for coverage.
+    if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+        target_compile_options(${CREATELIB_NAME} PUBLIC -g -O0 --coverage)
+        if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.13)
+            target_link_options(${CREATELIB_NAME} PUBLIC --coverage)
+        else()
+            target_link_libraries(${CREATELIB_NAME} PUBLIC --coverage)
+        endif()
+    endif()
+
     # Output Path for the non-config build (i.e. mingw)
     set_target_properties(${CREATELIB_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY bin)
     set_target_properties(${CREATELIB_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY bin)
@@ -212,6 +222,16 @@ macro(createapp)
     foreach(dep ${CREATEAPP_DEPS})
         target_link_libraries(${CREATEAPP_NAME} PRIVATE ${dep})
     endforeach(dep)
+
+    # Add options for coverage.
+    if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+        target_compile_options(${TARGET_NAME} PUBLIC -g -O0 --coverage)
+        if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.13)
+            target_link_options(${TARGET_NAME} PUBLIC --coverage)
+        else()
+            target_link_libraries(${TARGET_NAME} PUBLIC --coverage)
+        endif()
+    endif()
 
     add_resource_info(${CREATEAPP_NAME} FALSE ${VERSION_MAJOR} ${VERSION_MINOR} ${VERSION_PATCH}
                       ${CREATEAPP_NAME}
