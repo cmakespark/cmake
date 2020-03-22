@@ -225,11 +225,11 @@ macro(createapp)
 
     # Add options for coverage.
     if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-        target_compile_options(${TARGET_NAME} PUBLIC -g -O0 --coverage)
+        target_compile_options(${CREATEAPP_NAME} PUBLIC -g -O0 --coverage)
         if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.13)
-            target_link_options(${TARGET_NAME} PUBLIC --coverage)
+            target_link_options(${CREATEAPP_NAME} PUBLIC --coverage)
         else()
-            target_link_libraries(${TARGET_NAME} PUBLIC --coverage)
+            target_link_libraries(${CREATEAPP_NAME} PUBLIC --coverage)
         endif()
     endif()
 
