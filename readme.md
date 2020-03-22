@@ -13,14 +13,17 @@ git submodule add -b <tag> https://github.com/cmakespark/cmake.git path/to/cmake
 ## Cloning during cmake run
 Add this snippet to your CMakeLists.txt
 ```
-# Download build system
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/cmakespark/v2.0")
+set(CMAKESPARK_VERSION "2.0.0" CACHE STRING "CMakeSpark version")
+if(NOT EXISTS "${CMAKE_BINARY_DIR}/buildsys/v${CMAKESPARK_VERSION}")
     message(STATUS "Downloading buildsystem...")
 
-    find_package(Git REQUIRED)
-    execute_process(COMMAND ${GIT_EXECUTABLE} clone --branch v2.0 https://github.com/cmakespark/cmake.git ${CMAKE_BINARY_DIR}/cmakespark/v2.0)
+    set(CMAKESPARK_ARCHIVE ${CMAKE_BINARY_DIR}/buildsys/cmakespark-${CMAKESPARK_VERSION}.zip)
+    file(DOWNLOAD "https://github.com/cmakespark/cmake/releases/download/v${CMAKESPARK_VERSION}/cmakespark.zip" ${CMAKESPARK_ARCHIVE} SHOW_PROGRESS)
+    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/buildsys/v${CMAKESPARK_VERSION})
+    execute_process(COMMAND ${CMAKE_COMMAND} -E tar vxzf ${CMAKESPARK_ARCHIVE}
+                    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/buildsys/v${CMAKESPARK_VERSION} )
 endif()
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR}/cmakespark/v2.0")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR}/buildsys/v${CMAKESPARK_VERSION}")
 ```
 
 # Usage
