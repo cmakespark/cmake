@@ -18,5 +18,5 @@ if(Qt5LinguistTools_FOUND)
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TRANSLATION_OUTPUT_FILES})
 
     # Create build target
-    add_custom_target(translate ALL DEPENDS ${QM_FILES})
+    add_custom_target(translate DEPENDS ${QM_FILES})
 endif(Qt5LinguistTools_FOUND)
