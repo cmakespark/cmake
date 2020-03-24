@@ -54,6 +54,10 @@ macro(createlib)
     set(BIN_INSTALL_DIR bin)
     set(CMAKE_INSTALL_DIR lib/cmake/${CMAKE_DIRECTORY_NAME})
 
+    # Generate global header (define)
+    string(TOLOWER ${CREATELIB_NAME} CREATELIB_NAME_LOWER)
+    set(GLOBAL_HEADER ${CMAKE_CURRENT_BINARY_DIR}/${CREATELIB_NAME_LOWER}_export.h)
+
     # Linking
     if(${CREATELIB_STATIC})
         set(LINKING "STATIC")
@@ -66,15 +70,23 @@ macro(createlib)
     add_library(${CREATELIB_NAME} ${LINKING}
                 ${CREATELIB_SOURCES}
                 ${CREATELIB_PUBLIC_HEADERS}
-                ${CREATELIB_PRIVATE_HEADERS})
+                ${CREATELIB_PRIVATE_HEADERS}
+                ${GLOBAL_HEADER})
     add_library(${CREATELIB_NAMESPACE}${VERSION_MAJOR}::${CREATELIB_NAME} ALIAS ${CREATELIB_NAME})
+
+    # Global header (generate)
+    set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+    set(CMAKE_VISIBILITY_INLINES_HIDDEN YES)
+    include(GenerateExportHeader)
+    generate_export_header(${CREATELIB_NAME})
+    target_include_directories(${CREATELIB_NAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)
 
     message(STATUS "Creating ${LINKING} library ${CREATELIB_NAME} (${CREATELIB_NAMESPACE}${VERSION_MAJOR}::${CREATELIB_NAME}) ${CREATELIB_VERSION}")
 
     set_target_properties(${CREATELIB_NAME} PROPERTIES
         VERSION ${CREATELIB_VERSION}
         SOVERSION ${VERSION_MAJOR}
-        PUBLIC_HEADER "${CREATELIB_PUBLIC_HEADERS}"
+        PUBLIC_HEADER "${CREATELIB_PUBLIC_HEADERS} ${GLOBAL_HEADER}"
         PRIVATE_HEADER "${CREATELIB_PRIVATE_HEADERS}"
     )
 

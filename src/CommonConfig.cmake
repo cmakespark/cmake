@@ -65,6 +65,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Compile with @rpath option on Apple
+cmake_policy(SET CMP0068 NEW)
 if (APPLE)
   set(CMAKE_MACOSX_RPATH 1)
 endif (APPLE)
