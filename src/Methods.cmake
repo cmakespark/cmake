@@ -89,6 +89,16 @@ macro(createlib)
         target_include_directories(${CREATELIB_NAME} PUBLIC $<BUILD_INTERFACE:${include}>)
     endforeach(include)
 
+    foreach(header ${CREATELIB_PRIVATE_HEADERS})
+        get_filename_component(dir ${header} REALPATH)
+        get_filename_component(dir ${dir} DIRECTORY)
+        list(APPEND directories ${dir})
+    endforeach(header)
+    list(REMOVE_DUPLICATES directories)
+    foreach(include ${directories})
+        target_include_directories(${CREATELIB_NAME} PRIVATE $<BUILD_INTERFACE:${include}>)
+    endforeach(include)
+
     # Link dependencies
     foreach(dep ${CREATELIB_PUBLIC_DEPS})
         target_link_libraries(${CREATELIB_NAME} PUBLIC ${dep})
