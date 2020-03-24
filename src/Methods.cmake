@@ -54,6 +54,10 @@ macro(createlib)
     set(BIN_INSTALL_DIR bin)
     set(CMAKE_INSTALL_DIR lib/cmake/${CMAKE_DIRECTORY_NAME})
 
+    # Generate global header (define)
+    string(TOLOWER ${CREATELIB_NAME} CREATELIB_NAME_LOWER)
+    set(GLOBAL_HEADER ${CMAKE_CURRENT_BINARY_DIR}/${CREATELIB_NAME_LOWER}_export.h)
+
     # Linking
     if(${CREATELIB_STATIC})
         set(LINKING "STATIC")
@@ -66,8 +70,16 @@ macro(createlib)
     add_library(${CREATELIB_NAME} ${LINKING}
                 ${CREATELIB_SOURCES}
                 ${CREATELIB_PUBLIC_HEADERS}
-                ${CREATELIB_PRIVATE_HEADERS})
+                ${CREATELIB_PRIVATE_HEADERS}
+                ${GLOBAL_HEADER})
     add_library(${CREATELIB_NAMESPACE}${VERSION_MAJOR}::${CREATELIB_NAME} ALIAS ${CREATELIB_NAME})
+
+    # Global header (generate)
+    set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+    set(CMAKE_VISIBILITY_INLINES_HIDDEN YES)
+    include(GenerateExportHeader)
+    generate_export_header(${CREATELIB_NAME})
+    set(CREATELIB_PUBLIC_HEADERS ${CREATELIB_PUBLIC_HEADERS} ${GLOBAL_HEADER})
 
     message(STATUS "Creating ${LINKING} library ${CREATELIB_NAME} (${CREATELIB_NAMESPACE}${VERSION_MAJOR}::${CREATELIB_NAME}) ${CREATELIB_VERSION}")
 
@@ -87,6 +99,16 @@ macro(createlib)
     list(REMOVE_DUPLICATES directories)
     foreach(include ${directories})
         target_include_directories(${CREATELIB_NAME} PUBLIC $<BUILD_INTERFACE:${include}>)
+    endforeach(include)
+
+    foreach(header ${CREATELIB_PRIVATE_HEADERS})
+        get_filename_component(dir ${header} REALPATH)
+        get_filename_component(dir ${dir} DIRECTORY)
+        list(APPEND directories ${dir})
+    endforeach(header)
+    list(REMOVE_DUPLICATES directories)
+    foreach(include ${directories})
+        target_include_directories(${CREATELIB_NAME} PRIVATE $<BUILD_INTERFACE:${include}>)
     endforeach(include)
 
     # Link dependencies
@@ -128,6 +150,11 @@ macro(createlib)
 
         if(${CREATELIB_SHARED} OR ${ISSHAREDLIBRARY})
             install(FILES $<TARGET_PDB_FILE:${CREATELIB_NAME}> DESTINATION bin OPTIONAL)
+        else()
+            set_target_properties(${CREATELIB_NAME} PROPERTIES
+                COMPILE_PDB_NAME ${CREATELIB_NAME}
+                COMPILE_PDB_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+            install(FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CREATELIB_NAME}.pdb DESTINATION ${LIB_INSTALL_DIR} OPTIONAL)
         endif()
     endif()
 
