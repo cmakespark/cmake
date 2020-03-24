@@ -138,6 +138,11 @@ macro(createlib)
 
         if(${CREATELIB_SHARED} OR ${ISSHAREDLIBRARY})
             install(FILES $<TARGET_PDB_FILE:${CREATELIB_NAME}> DESTINATION bin OPTIONAL)
+        else()
+            set_target_properties(${CREATELIB_NAME} PROPERTIES
+                COMPILE_PDB_NAME ${CREATELIB_NAME}
+                COMPILE_PDB_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+            install(FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CREATELIB_NAME}.pdb DESTINATION ${LIB_INSTALL_DIR} OPTIONAL)
         endif()
     endif()
 
