@@ -115,6 +115,9 @@ macro(createlib)
     foreach(dep ${CREATELIB_PUBLIC_DEPS})
         target_link_libraries(${CREATELIB_NAME} PUBLIC ${dep})
     endforeach(dep)
+    foreach(dep ${CREATELIB_PRIVATE_DEPS})
+        target_link_libraries(${CREATELIB_NAME} PRIVATE ${dep})
+    endforeach(dep)
 
     # Add options for coverage.
     if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_BUILD_TYPE STREQUAL "Debug")
