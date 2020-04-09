@@ -15,6 +15,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
                         "-Wall"                             # turn on all warnings
                         "-pedantic"
                         "-Wextra"
+                        "-fno-rtti"                         # disable runtime type information
                         "-ffor-scope"
                         "-fuse-cxa-atexit"
                         "-fno-default-inline"
@@ -79,6 +80,7 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
                         "-Wall"                             # turn on all warnings
                         "-Wpedantic"
                         "-Wextra"
+                        "-fno-rtti"                         # disable runtime type information
                         "-Weffc++"                          # turn on warnings from Effective C++ handbook
                         "-ffor-scope"
                         "-fuse-cxa-atexit"
