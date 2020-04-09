@@ -161,7 +161,7 @@ macro(createlib)
         endif()
     endif()
 
-    if(DEFINED CREATELIB_GENERATE_PACKAGE)
+    if(${CREATELIB_GENERATE_PACKAGE})
         message(STATUS "${CREATELIB_NAME} is available as package. Add find_package(${CREATELIB_NAMESPACE}${VERSION_MAJOR}${CREATELIB_NAME} REQUIRED) to your project to provide the ${CREATELIB_NAME} target.")
 
         set(CMAKE_DIRECTORY_NAME ${CREATELIB_NAMESPACE}${VERSION_MAJOR}${CREATELIB_NAME})
@@ -204,7 +204,7 @@ macro(createlib)
                 DESTINATION ${CMAKE_INSTALL_DIR}
         )
 
-    endif(DEFINED CREATELIB_GENERATE_PACKAGE)
+    endif(${CREATELIB_GENERATE_PACKAGE})
 
 endmacro(createlib)
 
