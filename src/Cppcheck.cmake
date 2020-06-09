@@ -7,7 +7,7 @@ if(CPPCHECK_FOUND)
         add_custom_target(cppcheck)
     endif()
     add_custom_target(cppcheck-${PROJECT_BASE_NAME}
-        COMMAND ${CPPCHECK_EXECUTABLE} "--force" "--quiet" "--error-exitcode=1" "--language=c++" ${CPPCHECK_FILES}
+        COMMAND ${CPPCHECK_EXECUTABLE} "--force" "--quiet" "--error-exitcode=1" "--language=c++" "--library=qt" ${CPPCHECK_FILES}
         WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
         COMMENT "Running cppcheck..."
         VERBATIM)
