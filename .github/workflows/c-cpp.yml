@@ -1,0 +1,22 @@
+name: C/C++ CI
+
+on: push
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: configure
+      run: |
+        mkdir /tmp/build
+        cd /tmp/build
+        cmake -DCMAKE_BUILD_TYPE=DEbug -DCMAKE_INSTALL_PREFIX=/tmp/ .
+    - name: Make package
+      run: cmake --build . --target cmakespark
+    - name: All
+      run: cmake --build . --target all
+    - name: Run tests
+      run: cmake --build . --target runtests
