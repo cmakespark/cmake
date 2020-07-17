@@ -74,9 +74,11 @@ endif (APPLE)
 # Switch testing on
 # -----------------
 enable_testing()
-if (DEFINED QTDIR)
+
+find_package(Qt5Core QUIET)
+if (Qt5Core_FOUND)
     include(AddQtTest)
-endif (DEFINED QTDIR)
+endif (Qt5Core_FOUND)
 if (MANUAL_TESTS_ENABLED)
   message(STATUS "Manual tests are enabled")
   add_definitions(-DMANUAL_TESTS_ENABLED)
