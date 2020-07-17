@@ -5,7 +5,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2, actions/upload-artifact@v1
+
+    - name: Checkout repository
+    - uses: actions/checkout@v2
 
     - name: Configure
       run: |
@@ -19,7 +21,8 @@ jobs:
           cmake --build . --target cmakespark
     
     - name: Upload cmakespark.zip
-        with:
-          name: cmakespark.zip
-          path: /tmp/build/cmakespark.zip
+      uses: actions/upload-artifact@v1
+      with:
+        name: cmakespark.zip
+        path: /tmp/build/cmakespark.zip
 
