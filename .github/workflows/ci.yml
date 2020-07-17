@@ -14,5 +14,7 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/tmp/ $GITHUB_WORKSPACE
 
     - name: Build package
-      run: cmake --build . --target cmakespark
+      run: |
+	  pwd
+	  cmake --build . --target cmakespark
 
