@@ -15,6 +15,6 @@ jobs:
 
     - name: Build package
       run: |
-	  pwd
-	  cmake --build . --target cmakespark
+          pwd
+          cmake --build . --target cmakespark
 
