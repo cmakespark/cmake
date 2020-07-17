@@ -1,7 +1,7 @@
 
 # 2. Find the dependency
 find_package(Qt5LinguistTools QUIET)
-if(Qt5LinguistTools_FOUND)
+if(DEFINED QTDIR AND Qt5LinguistTools_FOUND)
     set(TRANSLATIONS_OUTPUT_DIR "${CMAKE_BINARY_DIR}/translations" CACHE STRING "Output directory to place translation files.")
     set(TRANSLATION_LOCALES "de;en;es;fr;it;nl;pl;pt;sv;hu" CACHE STRING "Locales to generate translation files for")
     
@@ -19,4 +19,4 @@ if(Qt5LinguistTools_FOUND)
 
     # Create build target
     add_custom_target(translate DEPENDS ${QM_FILES})
-endif(Qt5LinguistTools_FOUND)
+endif(DEFINED QTDIR AND Qt5LinguistTools_FOUND)
