@@ -17,4 +17,10 @@ jobs:
       run: |
           cd /tmp/build
           cmake --build . --target cmakespark
+    
+    - name: Upload cmakespark.zip
+        uses: actions/upload-artifact@v1
+        with:
+          name: cmakespark.zip
+          path: /tmp/build/cmakespark.zip
 
