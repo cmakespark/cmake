@@ -4,6 +4,14 @@ on:  push
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        env:
+        - { CMAKE_BUILD_TYPE: "Debug" }
+        - { CMAKE_BUILD_TYPE: "Release" }
+    env: ${{ matrix.env }}
+
     steps:
 
     - name: Checkout repository
@@ -13,7 +21,7 @@ jobs:
       run: |
           mkdir /tmp/build
           cd /tmp/build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/tmp/ $GITHUB_WORKSPACE
+          cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=/tmp/ $GITHUB_WORKSPACE
 
     - name: Build
       run: cmake --build /tmp/build --target all
