@@ -15,11 +15,15 @@ jobs:
           cd /tmp/build
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/tmp/ $GITHUB_WORKSPACE
 
-    - name: Build package
-      run: |
-          cd /tmp/build
-          cmake --build . --target cmakespark
-    
+    - name: Build
+      run: cmake --build /tmp/build --target all
+
+    - name: Test
+      run: cmake --build /tmp/build --target runtests
+
+    - name: Package
+      run: cmake --build /tmp/build --target cmakespark
+
     - name: Upload cmakespark.zip
       uses: actions/upload-artifact@v1
       with:
