@@ -17,6 +17,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+
     - name: Configure
       run: |
           mkdir /tmp/build
