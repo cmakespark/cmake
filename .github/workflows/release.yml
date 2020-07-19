@@ -39,8 +39,6 @@ jobs:
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: /tmp/build/cmakespark.zip
-        asset_name: CMakeSpark files
         tag: ${{ github.ref }}
         overwrite: true
-        body: "This is my release text"
 
