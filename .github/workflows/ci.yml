@@ -33,6 +33,9 @@ jobs:
       with:
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
 
+    - name: logging
+      run: echo $GITHUB_WORKSPACE
+
     - name: Configure
       run: |
           mkdir $HOME/build
