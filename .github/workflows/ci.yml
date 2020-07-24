@@ -37,7 +37,7 @@ jobs:
       run: |
           mkdir $HOME/build
           cd $HOME/build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.cfg.build_type }} -DCMAKE_INSTALL_PREFIX=${{ HOME }} ${{ GITHUB_WORKSPACE }}
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.cfg.build_type }} -DCMAKE_INSTALL_PREFIX='~/install' $GITHUB_WORKSPACE
 
     - name: Build
       run: cmake --build $HOME/build --target all
