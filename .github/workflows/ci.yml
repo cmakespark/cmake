@@ -49,8 +49,8 @@ jobs:
       run: cmake --build $HOME/build --target cmakespark
 
     - name: Upload cmakespark.zip
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: cmakespark.zip
-        path: $HOME/build/cmakespark.zip
+        path: ${{ HOME }}/build/cmakespark.zip
 
