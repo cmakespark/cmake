@@ -38,22 +38,22 @@ jobs:
 
     - name: Configure
       run: |
-          mkdir $HOME/build
-          cd $HOME/build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.cfg.build_type }} -DCMAKE_INSTALL_PREFIX='~/install' $GITHUB_WORKSPACE
+          mkdir $GITHUB_WORKSPACE/build
+          cd $GITHUB_WORKSPACE/build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.cfg.build_type }} -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install $GITHUB_WORKSPACE
 
     - name: Build
-      run: cmake --build $HOME/build --target all
+      run: cmake --build $GITHUB_WORKSPACE/build --target all
 
     - name: Test
-      run: cmake --build $HOME/build --target runtests
+      run: cmake --build $GITHUB_WORKSPACE/build --target runtests
 
     - name: Package
-      run: cmake --build $HOME/build --target cmakespark
+      run: cmake --build $GITHUB_WORKSPACE/build --target cmakespark
 
     - name: Upload cmakespark.zip
       uses: actions/upload-artifact@v2
       with:
         name: cmakespark.zip
-        path: '~/build/cmakespark.zip'
+        path: ${{ GITHUB_WORKSPACE }}/build/cmakespark.zip'
 
