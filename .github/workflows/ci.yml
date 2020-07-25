@@ -43,7 +43,7 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=${{ matrix.cfg.build_type }} -DCMAKE_INSTALL_PREFIX='~/install' ..
 
     - name: Build
-      run: cmake --build build --target install
+      run: cmake --build build
 
     - name: Test
       run: cmake --build build --target runtests
