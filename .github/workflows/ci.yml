@@ -43,13 +43,13 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=${{ matrix.cfg.build_type }} -DCMAKE_INSTALL_PREFIX='~/install' ..
 
     - name: Build
-      run: cmake --build build --target all
+      run: cmake --build build --configuration ${{ matrix.cfg.build_type }} --target install
 
     - name: Test
-      run: cmake --build build --target runtests
+      run: cmake --build build --configuration ${{ matrix.cfg.build_type }} --target runtests
 
     - name: Package
-      run: cmake --build build --target cmakespark
+      run: cmake --build build --configuration ${{ matrix.cfg.build_type }} --target cmakespark
 
     - name: Upload cmakespark.zip
       uses: actions/upload-artifact@v2
