@@ -3,7 +3,6 @@ on: push
 
 jobs:
   build:
-    uses: seanmiddleditch/gha-setup-ninja@master
     runs-on: ${{ matrix.cfg.os }}
     name:    ${{ matrix.cfg.name }} (${{ matrix.cfg.build_type }})
     strategy:
