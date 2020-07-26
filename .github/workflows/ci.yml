@@ -3,6 +3,7 @@ on: push
 
 jobs:
   build:
+    uses: seanmiddleditch/gha-setup-ninja@master
     runs-on: ${{ matrix.cfg.os }}
     name:    ${{ matrix.cfg.name }} (${{ matrix.cfg.build_type }})
     strategy:
@@ -13,8 +14,8 @@ jobs:
         - { os: ubuntu-latest,  name: GCC,     cc: gcc,   cxx: g++,     platform: x64, build_type: Release, test_target: test }
         - { os: ubuntu-latest,  name: Clang,   cc: clang, cxx: clang++, platform: x64, build_type: Debug,   test_target: test }
         - { os: ubuntu-latest,  name: Clang,   cc: clang, cxx: clang++, platform: x64, build_type: Release, test_target: test }
-        - { os: windows-latest, name: Windows, cc: cl,    cxx: cl,      platform: x64, build_type: Debug,   test_target: runtests }
-        - { os: windows-latest, name: Windows, cc: cl,    cxx: cl,      platform: x64, build_type: Release, test_target: runtests }
+        - { os: windows-latest, name: Windows, cc: cl,    cxx: cl,      platform: x64, build_type: Debug,   test_target: RUN_TESTS }
+        - { os: windows-latest, name: Windows, cc: cl,    cxx: cl,      platform: x64, build_type: Release, test_target: RUN_TESTS }
 
     steps:
 
