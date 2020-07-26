@@ -1,0 +1,56 @@
+name: CI
+on: push
+
+jobs:
+  build:
+    runs-on: ${{ matrix.cfg.os }}
+    name:    ${{ matrix.cfg.name }} (${{ matrix.cfg.build_type }})
+    strategy:
+      fail-fast: false
+      matrix:
+        cfg:
+        - { os: ubuntu-latest,  name: GCC,     cc: gcc,   cxx: g++,     platform: x64, build_type: Debug,   test_target: test }
+        - { os: ubuntu-latest,  name: GCC,     cc: gcc,   cxx: g++,     platform: x64, build_type: Release, test_target: test }
+        - { os: ubuntu-latest,  name: Clang,   cc: clang, cxx: clang++, platform: x64, build_type: Debug,   test_target: test }
+        - { os: ubuntu-latest,  name: Clang,   cc: clang, cxx: clang++, platform: x64, build_type: Release, test_target: test }
+        - { os: windows-latest, name: Windows, cc: cl,    cxx: cl,      platform: x64, build_type: Debug,   test_target: RUN_TESTS }
+        - { os: windows-latest, name: Windows, cc: cl,    cxx: cl,      platform: x64, build_type: Release, test_target: RUN_TESTS }
+
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v1
+      with:
+        path: ../Qt
+        key: ${{ runner.os }}-QtCache
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+
+    - name: Configure
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.cfg.build_type }} -DCMAKE_INSTALL_PREFIX='~/install' ..
+
+    - name: Build
+      run: cmake --build build
+
+    - name: Test
+      run: cmake --build build --target ${{ matrix.cfg.test_target }}
+
+    - name: Package
+      run: cmake --build build --target cmakespark
+
+    - name: Upload cmakespark.zip
+      uses: actions/upload-artifact@v2
+      with:
+        name: cmakespark.zip
+        path: build/cmakespark.zip
+

@@ -11,23 +11,15 @@ endif()
 
 # Usage of Qt libraries (optional)
 # --------------------------------
-# Point CMake search path to Qt intallation directory
-# Either supply QTDIR as -DQTDIR=<path> to cmake or set an environment variable QTDIR pointing to the Qt installation
-# If not set, all Qt-related functionality is not available.
-if ((NOT DEFINED QTDIR) AND DEFINED ENV{QTDIR})
-  set(QTDIR $ENV{QTDIR})
-endif ((NOT DEFINED QTDIR) AND DEFINED ENV{QTDIR})
-
-if (DEFINED QTDIR)
-    list (APPEND CMAKE_PREFIX_PATH ${QTDIR})
-
+find_package(Qt5Core QUIET)
+if (Qt5Core_FOUND)
     # Instruct CMake to run moc automatically when needed.
     set(CMAKE_AUTOMOC ON)
     # let CMake decide which classes need to be rcc'ed by qmake (Qt)
     set(CMAKE_AUTORCC ON)
     # let CMake decide which classes need to be uic'ed by qmake (Qt)
     set(CMAKE_AUTOUIC ON)
-endif (DEFINED QTDIR)
+endif (Qt5Core_FOUND)
 
 # Usage of CMake Packages
 # -----------------------
@@ -74,9 +66,11 @@ endif (APPLE)
 # Switch testing on
 # -----------------
 enable_testing()
-if (DEFINED QTDIR)
+
+find_package(Qt5Core QUIET)
+if (Qt5Core_FOUND)
     include(AddQtTest)
-endif (DEFINED QTDIR)
+endif (Qt5Core_FOUND)
 if (MANUAL_TESTS_ENABLED)
   message(STATUS "Manual tests are enabled")
   add_definitions(-DMANUAL_TESTS_ENABLED)
