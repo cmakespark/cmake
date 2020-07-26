@@ -9,12 +9,12 @@ jobs:
       fail-fast: false
       matrix:
         cfg:
-        - { os: ubuntu-latest,  name: GCC,     cc: gcc,   cxx: g++,     platform: x64, build_type: Debug }
-        - { os: ubuntu-latest,  name: GCC,     cc: gcc,   cxx: g++,     platform: x64, build_type: Release }
-        - { os: ubuntu-latest,  name: Clang,   cc: clang, cxx: clang++, platform: x64, build_type: Debug }
-        - { os: ubuntu-latest,  name: Clang,   cc: clang, cxx: clang++, platform: x64, build_type: Release }
-        - { os: windows-latest, name: Windows, cc: cl,    cxx: cl,      platform: x64, build_type: Debug }
-        - { os: windows-latest, name: Windows, cc: cl,    cxx: cl,      platform: x64, build_type: Release }
+        - { os: ubuntu-latest,  name: GCC,     cc: gcc,   cxx: g++,     platform: x64, build_type: Debug,   test_target: test }
+        - { os: ubuntu-latest,  name: GCC,     cc: gcc,   cxx: g++,     platform: x64, build_type: Release, test_target: test }
+        - { os: ubuntu-latest,  name: Clang,   cc: clang, cxx: clang++, platform: x64, build_type: Debug,   test_target: test }
+        - { os: ubuntu-latest,  name: Clang,   cc: clang, cxx: clang++, platform: x64, build_type: Release, test_target: test }
+        - { os: windows-latest, name: Windows, cc: cl,    cxx: cl,      platform: x64, build_type: Debug,   test_target: runtests }
+        - { os: windows-latest, name: Windows, cc: cl,    cxx: cl,      platform: x64, build_type: Release, test_target: runtests }
 
     steps:
 
@@ -46,7 +46,7 @@ jobs:
       run: cmake --build build
 
     - name: Test
-      run: cmake --build build --target runtests
+      run: cmake --build build --target ${{ matrix.cfg.test_target }}
 
     - name: Package
       run: cmake --build build --target cmakespark
