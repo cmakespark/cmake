@@ -64,6 +64,14 @@ if(CMAKE_COMPILER_IS_GNUCXX)
                         "-Wsign-conversion"
 #                       "-Wuseless-cast"
 #                       "-Wzero-as-null-pointer-constant"
+                        "-Wformat-security"
+                        "-mmitigate-rop"
+                        "-mindirect-branch=thunk"
+			"-mfunction-return=thunk"
+			"-fstack-protector-all"
+			"-Wstack-protector --param ssp-buffer-size=4"
+			"-pie -fPIE"
+			"-Wl,-z,noexecstack"
     )
     if(WIN32)
         # Fix for using LxCan sensor SDK
@@ -186,6 +194,9 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
                         "/nologo"
                         "/EHsc-"    # disable exceptions
                         "/GR-"      # disable RTTI
+                        "/DyNAMICBASE"
+                        "/GS"
+                        "/sdl"
     )
 endif()
 
