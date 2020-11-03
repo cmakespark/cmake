@@ -248,6 +248,17 @@ macro(createapp)
                    ${CREATEAPP_SOURCES}
                    ${CREATEAPP_HEADERS})
 
+    # Include build directories
+    foreach(header ${CREATEAPP_HEADERS})
+        get_filename_component(dir ${header} REALPATH)
+        get_filename_component(dir ${dir} DIRECTORY)
+        list(APPEND directories ${dir})
+    endforeach(header)
+    list(REMOVE_DUPLICATES directories)
+    foreach(include ${directories})
+        target_include_directories(${CREATEAPP_NAME} PRIVATE $<BUILD_INTERFACE:${include}>)
+    endforeach(include)
+    
     # Link dependencies
     foreach(dep ${CREATEAPP_DEPS})
         target_link_libraries(${CREATEAPP_NAME} PRIVATE ${dep})
