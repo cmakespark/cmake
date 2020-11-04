@@ -159,8 +159,6 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 #                       "-Wuseless-cast"                    # not supported by Clang
 #                       "-Wzero-as-null-pointer-constant"   # not supported by Clang
                         "-Wformat-security"
-			"-fstack-protector-all"
-			"-fsanitize=safe-stack"
     )
 
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
