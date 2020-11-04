@@ -62,6 +62,11 @@ if (APPLE)
   set(CMAKE_MACOSX_RPATH 1)
 endif (APPLE)
 
+if(WIN32)
+    add_definitions(-DUNICODE)
+    add_definitions(-DNOMINMAX)
+    link_libraries(Userenv)
+endif(WIN32)
 
 # Switch testing on
 # -----------------
