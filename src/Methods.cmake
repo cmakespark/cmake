@@ -215,8 +215,8 @@ endmacro(createlib)
 macro(createapp)
     cmake_parse_arguments(
         CREATEAPP # prefix of output variables
-        "CONSOLE" # list of names of the boolean arguments (only defined ones will be true)
-        "NAME;VERSION" # list of names of mono-valued arguments
+        "CONSOLE;GENERATE_PACKAGE" # list of names of the boolean arguments (only defined ones will be true)
+        "NAME;NAMESPACE;VERSION" # list of names of mono-valued arguments
         "SOURCES;HEADERS;DEPS" # list of names of multi-valued arguments (output variables are lists)
         ${ARGN} # arguments of the function to parse, here we take the all original ones
     )
@@ -300,5 +300,52 @@ macro(createapp)
     set_target_properties(${CREATEAPP_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY bin)
 
     install(TARGETS ${CREATEAPP_NAME} DESTINATION bin)
+    
+        if(${CREATEAPP_GENERATE_PACKAGE})
+        if(NOT CREATEAPP_NAMESPACE)
+            message(FATAL_ERROR "You must provide a namespace")
+        endif(NOT CREATEAPP_NAMESPACE)
+        
+        message(STATUS "${CREATEAPP_NAME} is available as package. Add find_package(${CREATEAPP_NAMESPACE}${VERSION_MAJOR}${CREATEAPP_NAME} REQUIRED) to your project to provide the ${CREATEAPP_NAME} target.")
+
+        set(CMAKE_DIRECTORY_NAME ${CREATEAPP_NAMESPACE}${VERSION_MAJOR}${CREATEAPP_NAME})
+        set(CMAKE_INSTALL_DIR lib/cmake/${CREATEAPP_NAMESPACE}${VERSION_MAJOR}${CREATEAPP_NAME})
+        set(BIN_INSTALL_DIR bin)
+        set(CMAKE_CONFIG_FILE_BASE_NAME ${CREATEAPP_NAMESPACE}${VERSION_MAJOR}${CREATEAPP_NAME})
+        set(CMAKE_INSTALL_DIR lib/cmake/${CMAKE_DIRECTORY_NAME})
+        
+        # Create config file
+        configure_package_config_file(
+            ${METHODS_LOCATION}/config.cmake.in
+            ${CMAKE_BINARY_DIR}/${CMAKE_CONFIG_FILE_BASE_NAME}Config.cmake
+            INSTALL_DESTINATION ${CMAKE_INSTALL_DIR}
+        )
+
+        # Create a config version file
+        write_basic_package_version_file(
+          ${CMAKE_BINARY_DIR}/${CMAKE_CONFIG_FILE_BASE_NAME}ConfigVersion.cmake
+          VERSION ${CREATEAPP_VERSION}
+          COMPATIBILITY SameMajorVersion
+        )
+
+        # Create import targets
+        install(TARGETS ${CREATEAPP_NAME} EXPORT ${CREATEAPP_NAME}Targets
+          RUNTIME DESTINATION ${BIN_INSTALL_DIR}
+        )
+
+        # Export the import targets
+        install(EXPORT ${CREATEAPP_NAME}Targets
+          FILE "${CMAKE_CONFIG_FILE_BASE_NAME}Targets.cmake"
+          NAMESPACE ${CREATEAPP_NAMESPACE}${VERSION_MAJOR}::
+          DESTINATION ${CMAKE_INSTALL_DIR}
+        )
+
+        # Now install the 3 config files
+        install(FILES ${CMAKE_BINARY_DIR}/${CMAKE_CONFIG_FILE_BASE_NAME}Config.cmake
+                      ${CMAKE_BINARY_DIR}/${CMAKE_CONFIG_FILE_BASE_NAME}ConfigVersion.cmake
+                DESTINATION ${CMAKE_INSTALL_DIR}
+        )
+
+    endif(${CREATEAPP_GENERATE_PACKAGE})
 
 endmacro(createapp)
