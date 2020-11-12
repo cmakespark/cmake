@@ -1,9 +1,9 @@
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     # Only run valgrind for Debug builds.
-    find_program(VALGRIND valgrind)
-    if(VALGRIND)
+    #find_program(VALGRIND valgrind)
+    if(VALGRIND AND NOT DEFINED NO_VALGRIND)
         message(STATUS "Unit tests will be profiled on memory leaks using valgrind: ${VALGRIND}")
-    endif(VALGRIND)
+    endif(VALGRIND AND NOT DEFINED NO_VALGRIND)
 endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 macro(add_qt_test TEST_NAME SRCS)
@@ -11,7 +11,7 @@ macro(add_qt_test TEST_NAME SRCS)
     add_executable(${TEST_NAME} ${SRCS})
     target_link_libraries(${TEST_NAME} PUBLIC Qt5::Test)
 
-    if(VALGRIND)
+    if(VALGRIND AND NOT DEFINED NO_VALGRIND)
         add_test(NAME ${TEST_NAME} COMMAND ${VALGRIND} --error-exitcode=1 --leak-check=full ${VALGRIND_OPTS} $<TARGET_FILE:${TEST_NAME}>)
     else()
         add_test(NAME ${TEST_NAME} COMMAND $<TARGET_FILE:${TEST_NAME}>)
