@@ -161,7 +161,24 @@ macro(createlib)
             set_target_properties(${CREATELIB_NAME} PROPERTIES
                 COMPILE_PDB_NAME ${CREATELIB_NAME}
                 COMPILE_PDB_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
-            install(FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CREATELIB_NAME}.pdb DESTINATION ${LIB_INSTALL_DIR} OPTIONAL)
+
+            # Single config generator
+            install(FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CREATELIB_NAME}.pdb
+                    DESTINATION ${LIB_INSTALL_DIR} OPTIONAL)
+
+            # Multi config generator
+            install(FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug/${CREATELIB_NAME}.pdb
+                    CONFIGURATIONS Debug
+                    DESTINATION ${LIB_INSTALL_DIR} OPTIONAL)
+            install(FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Release/${CREATELIB_NAME}.pdb
+                    CONFIGURATIONS Release
+                    DESTINATION ${LIB_INSTALL_DIR} OPTIONAL)
+            install(FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/MinSizeRel/${CREATELIB_NAME}.pdb
+                    CONFIGURATIONS MinSizeRel
+                    DESTINATION ${LIB_INSTALL_DIR} OPTIONAL)
+            install(FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/RelWithDebInfo/${CREATELIB_NAME}.pdb
+                    CONFIGURATIONS RelWithDebInfo
+                    DESTINATION ${LIB_INSTALL_DIR} OPTIONAL)
         endif()
     endif()
 
@@ -295,9 +312,9 @@ macro(createapp)
     endif(${CREATEAPP_CONSOLE})
 
     # Output Path for the non-config build (i.e. mingw)
-    set_target_properties(${CREATEAPP_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY bin)
-    set_target_properties(${CREATEAPP_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY bin)
-    set_target_properties(${CREATEAPP_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY bin)
+    set_target_properties(${CREATEAPP_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+    set_target_properties(${CREATEAPP_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+    set_target_properties(${CREATEAPP_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
     install(TARGETS ${CREATEAPP_NAME} DESTINATION bin)
     
