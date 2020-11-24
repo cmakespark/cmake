@@ -11,67 +11,66 @@ ENDIF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
     set(COMPILER_FLAGS
-                        "-std=c++11"
-                        "-Wall"                             # turn on all warnings
-                        "-pedantic"
-                        "-Wextra"
-                        "-fno-rtti"                         # disable runtime type information
-                        "-ffor-scope"
-                        "-fuse-cxa-atexit"
-                        "-fno-default-inline"
-                        "-fvisibility=hidden"               # do not export symbols by default
-                        "-fvisibility-inlines-hidden"
-                        "-pedantic-errors"
-                        "-Wsign-promo"
-                        "-Wsign-compare"
-                        "-Wnon-virtual-dtor"
-                        "-Wold-style-cast"
-                        "-Woverloaded-virtual"
-                        "-Wswitch"
-                        "-Wswitch-default"
-                        "-Wswitch-enum"
-                        "-Wcast-qual"
-                        "-Wcast-align"
-                        "-Wuninitialized"
-                        "-Wno-float-equal"
-                        "-Wlogical-op"
-                        "-Wpacked"
-                        "-Wredundant-decls"
-                        "-Wdisabled-optimization"
-                        "-Wdeprecated"
-                        "-Wempty-body"
-                        "-Wreturn-type"
-                        "-Wunused-variable"
-                        "-Wno-unknown-pragmas"              # suppress unknown pragma warnings
-                        "-Wformat"
-                        "-Wunreachable-code"
-                        "-mfpmath=sse"                      # needed on Debian 32-bit to get high precision floating point operations
-                        "-msse2"                            # needed on Debian 32-bit to get high precision floating point operations
+                    "-std=c++11"
+                    "-Wall"                             # turn on all warnings
+                    "-pedantic"
+                    "-Wextra"
+                    "-fno-rtti"                         # disable runtime type information
+                    "-fuse-cxa-atexit"
+                    "-fno-default-inline"
+                    "-fvisibility=hidden"               # do not export symbols by default
+                    "-fvisibility-inlines-hidden"
+                    "-pedantic-errors"
+                    "-Wsign-promo"
+                    "-Wsign-compare"
+                    "-Wnon-virtual-dtor"
+                    "-Wold-style-cast"
+                    "-Woverloaded-virtual"
+                    "-Wswitch"
+                    "-Wswitch-default"
+                    "-Wswitch-enum"
+                    "-Wcast-qual"
+                    "-Wcast-align"
+                    "-Wuninitialized"
+                    "-Wno-float-equal"
+                    "-Wlogical-op"
+                    "-Wpacked"
+                    "-Wredundant-decls"
+                    "-Wdisabled-optimization"
+                    "-Wdeprecated"
+                    "-Wempty-body"
+                    "-Wreturn-type"
+                    "-Wunused-variable"
+                    "-Wno-unknown-pragmas"              # suppress unknown pragma warnings
+                    "-Wformat"
+                    "-Wunreachable-code"
+                    "-mfpmath=sse"                      # needed on Debian 32-bit to get high precision floating point operations
+                    "-msse2"                            # needed on Debian 32-bit to get high precision floating point operations
 
-                        "-Weffc++"                          # warnings from Effective C++ book;
+                    "-Weffc++"                          # warnings from Effective C++ book;
 
-                        "-Werror"
-                        "-Wformat-nonliteral"               # const char* argumements could not langer be passed due to this entry
+                    "-Werror"
+                    "-Wformat-nonliteral"               # const char* argumements could not langer be passed due to this entry
 #                       "-Winline"                          # gcc on Linux seems to decide frequently not to inline, and warns about it.
 #                                                           # We don't need to know about it, since not inlining is not a problem.
 #                       "-Wnull-character"                  # not supported by gcc
 #                        "-Wshadow"                         # disable shadow warning as gcc generates
-                                                            # warnings for parameters with same name
-                                                            # as methods in the class.
-                                                            # This option is enabled for clang builds,
-                                                            # so the 'real' shadow variables will be
-                                                            # caught be clang
-                        "-Wsign-conversion"
+                                                        # warnings for parameters with same name
+                                                        # as methods in the class.
+                                                        # This option is enabled for clang builds,
+                                                        # so the 'real' shadow variables will be
+                                                        # caught be clang
+                    "-Wsign-conversion"
 #                       "-Wuseless-cast"
 #                       "-Wzero-as-null-pointer-constant"
-                        "-Wformat-security"
-                        "-mmitigate-rop"
-                        "-mindirect-branch=thunk"
-			"-mfunction-return=thunk"
-			"-fstack-protector-all"
-			"-Wstack-protector --param ssp-buffer-size=4"
-			"-pie -fPIE"
-			"-Wl,-z,noexecstack"
+                    "-Wformat-security"
+                    "-mindirect-branch=thunk"
+                    "-fcf-protection=none"
+                    "-mfunction-return=thunk"
+                    "-fstack-protector-all"
+                    "-Wstack-protector --param ssp-buffer-size=4"
+                    "-pie -fPIE"
+                    "-Wl,-z,noexecstack"
     )
     if(WIN32)
         # Fix for using LxCan sensor SDK
