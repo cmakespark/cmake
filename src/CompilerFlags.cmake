@@ -72,7 +72,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
                     "-Wl,-z,noexecstack"
     )
     
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.2)
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 8.0)
         set(COMPILER_FLAGS "${COMPILER_FLAGS}" "-fcf-protection=none")
     endif()
     
