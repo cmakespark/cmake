@@ -65,13 +65,17 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 #                       "-Wzero-as-null-pointer-constant"
                     "-Wformat-security"
                     "-mindirect-branch=thunk"
-                    "-fcf-protection=none"
                     "-mfunction-return=thunk"
                     "-fstack-protector-all"
                     "-Wstack-protector --param ssp-buffer-size=4"
                     "-pie -fPIE"
                     "-Wl,-z,noexecstack"
     )
+    
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 8.0)
+        set(COMPILER_FLAGS "${COMPILER_FLAGS}" "-fcf-protection=none")
+    endif()
+    
     if(WIN32)
         # Fix for using LxCan sensor SDK
         # Since LxNative.dll uses stdcall convention, MinGW expects @.. decoration of the exposed functions,
