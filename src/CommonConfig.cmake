@@ -108,8 +108,6 @@ add_definitions(-DBUILD_HASH="${BUILD_HASH}")
 include(Doxygen)
 
 # Generate information (name, description, version, etc.) for applications and libraries
-include(GetGitRevisionDescription)
-include(GetVersionFromGitTag)
 include(AddResourceInfo)
 include(manifest/AddManifest)
 include(Methods)
