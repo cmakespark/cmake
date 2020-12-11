@@ -3,6 +3,7 @@ set(SOURCES
     config.cmake.in
     Doxyfile.in
     FindGcov.cmake
+    GetGitRevisionDescription.cmake
     Methods.cmake
     SetOutputDir.cmake
     AddResourceInfo.cmake
@@ -10,6 +11,8 @@ set(SOURCES
     Cppcheck.cmake
     Doxygen.cmake
     FindGcovr.cmake
+    GetGitRevisionDescription.cmake.in
+    GetVersionFromGitTag.cmake
     Package.cmake
     Translations.cmake
     CommonConfig.cmake
