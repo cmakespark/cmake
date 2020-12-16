@@ -339,7 +339,7 @@ macro(createapp)
         
         # Create config file
         configure_package_config_file(
-            ${METHODS_LOCATION}/config.cmake.in
+            ${METHODS_LOCATION}/app-config.cmake.in
             ${CMAKE_BINARY_DIR}/${CMAKE_CONFIG_FILE_BASE_NAME}Config.cmake
             INSTALL_DESTINATION ${CMAKE_INSTALL_DIR}
         )
