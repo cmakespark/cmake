@@ -1,6 +1,7 @@
 set(SOURCES
     AddQtTest.cmake
     config.cmake.in
+    app-config.cmake.in
     Doxyfile.in
     FindGcov.cmake
     GetGitRevisionDescription.cmake
