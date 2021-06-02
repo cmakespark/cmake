@@ -201,6 +201,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
                         "/DyNAMICBASE"
                         "/GS"
                         "/sdl"
+                        "/Wv:18"    # disable warnings introduced in this compiler version
     )
 endif()
 
