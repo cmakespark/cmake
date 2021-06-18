@@ -19,7 +19,6 @@ macro(createlib)
         message(FATAL_ERROR "You must provide a version")
     endif(NOT CREATELIB_VERSION)
 
-
     # Version field
     set(VERSION_MAJOR 0)
     set(VERSION_MINOR 0)
@@ -269,6 +268,15 @@ macro(createapp)
         list (GET VERSION_PARTS 1 VERSION_MINOR)
         list (GET VERSION_PARTS 2 VERSION_PATCH)
     endif()
+    
+    if(NOT ${CREATEAPP_CONSOLE})
+        if(WIN32 AND NOT UNIX)
+			set(GUI_TYPE WIN32)
+        endif()
+		if(APPLE)
+			set(GUI_TYPE MACOSX_BUNDLE)
+		endif(APPLE)
+    endif(NOT ${CREATEAPP_CONSOLE})
 
     # Create target
     add_executable(${CREATEAPP_NAME}
@@ -308,14 +316,6 @@ macro(createapp)
                       ${CREATEAPP_NAME}
                       ${CREATEAPP_SOURCES})
     add_manifest(${CREATEAPP_NAME} BIN)
-
-    if(${CREATEAPP_CONSOLE})
-        if(WIN32 AND NOT UNIX)
-            set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /subsystem:windows /entry:mainCRTStartup")
-            set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /subsystem:windows /entry:mainCRTStartup")
-            set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO} /subsystem:windows /entry:mainCRTStartup")
-        endif()
-    endif(${CREATEAPP_CONSOLE})
 
     # Output Path for the non-config build (i.e. mingw)
     set_target_properties(${CREATEAPP_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
