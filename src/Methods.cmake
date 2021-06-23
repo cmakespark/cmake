@@ -271,11 +271,11 @@ macro(createapp)
     
     if(NOT ${CREATEAPP_CONSOLE})
         if(WIN32 AND NOT UNIX)
-			set(GUI_TYPE WIN32)
+            set(GUI_TYPE WIN32)
         endif()
-		if(APPLE)
-			set(GUI_TYPE MACOSX_BUNDLE)
-		endif(APPLE)
+            if(APPLE)
+                set(GUI_TYPE MACOSX_BUNDLE)
+        endif(APPLE)
     endif(NOT ${CREATEAPP_CONSOLE})
 
     # Create target
