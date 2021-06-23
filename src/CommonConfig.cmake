@@ -113,4 +113,4 @@ include(GetVersionFromGitTag)
 include(AddResourceInfo)
 include(manifest/AddManifest)
 include(Methods)
-include(Translations)
+
