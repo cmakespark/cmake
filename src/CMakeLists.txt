@@ -15,7 +15,6 @@ set(SOURCES
     GetGitRevisionDescription.cmake.in
     GetVersionFromGitTag.cmake
     Package.cmake
-    Translations.cmake
     CommonConfig.cmake
     DefineProject.cmake
     doxygen_custom.css
