@@ -268,18 +268,24 @@ macro(createapp)
         list (GET VERSION_PARTS 1 VERSION_MINOR)
         list (GET VERSION_PARTS 2 VERSION_PATCH)
     endif()
-    
-    if(NOT ${CREATEAPP_CONSOLE})
-        if(WIN32 AND NOT UNIX)
-            set(GUI_TYPE WIN32)
-        endif()
-            if(APPLE)
-                set(GUI_TYPE MACOSX_BUNDLE)
-        endif(APPLE)
-    endif(NOT ${CREATEAPP_CONSOLE})
+
+    if(${CREATEAPP_CONSOLE})
+        if(MSVC)
+            set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /subsystem:console")
+            set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /subsystem:console")
+            set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO} /subsystem:console")
+        endif(MSVC)
+    else(${CREATEAPP_CONSOLE})
+        if(MSVC)
+            set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /subsystem:windows /entry:mainCRTStartup")
+            set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /subsystem:windows /entry:mainCRTStartup")
+            set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO} /subsystem:windows /entry:mainCRTStartup")
+            set(WINFLAG "WIN32")
+        endif(MSVC)
+    endif(${CREATEAPP_CONSOLE})
 
     # Create target
-    add_executable(${CREATEAPP_NAME}
+    add_executable(${CREATEAPP_NAME} ${WINFLAG}
                    ${CREATEAPP_SOURCES}
                    ${CREATEAPP_HEADERS})
 
@@ -324,7 +330,7 @@ macro(createapp)
 
     install(TARGETS ${CREATEAPP_NAME} DESTINATION bin)
     
-        if(${CREATEAPP_GENERATE_PACKAGE})
+    if(${CREATEAPP_GENERATE_PACKAGE})
         if(NOT CREATEAPP_NAMESPACE)
             message(FATAL_ERROR "You must provide a namespace")
         endif(NOT CREATEAPP_NAMESPACE)
