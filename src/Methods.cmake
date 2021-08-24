@@ -19,7 +19,6 @@ macro(createlib)
         message(FATAL_ERROR "You must provide a version")
     endif(NOT CREATELIB_VERSION)
 
-
     # Version field
     set(VERSION_MAJOR 0)
     set(VERSION_MINOR 0)
@@ -272,19 +271,19 @@ macro(createapp)
 
     if(${CREATEAPP_CONSOLE})
         if(MSVC)
-		    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /subsystem:console")
+            set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /subsystem:console")
             set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /subsystem:console")
             set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO} /subsystem:console")
         endif(MSVC)
-	else(${CREATEAPP_CONSOLE})
-		if(MSVC)
-		    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /subsystem:windows /entry:mainCRTStartup")
+    else(${CREATEAPP_CONSOLE})
+        if(MSVC)
+            set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /subsystem:windows /entry:mainCRTStartup")
             set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /subsystem:windows /entry:mainCRTStartup")
             set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO} /subsystem:windows /entry:mainCRTStartup")
-		    set(WINFLAG "WIN32")
-	    endif(MSVC)
+            set(WINFLAG "WIN32")
+        endif(MSVC)
     endif(${CREATEAPP_CONSOLE})
-	
+
     # Create target
     add_executable(${CREATEAPP_NAME} ${WINFLAG}
                    ${CREATEAPP_SOURCES}
