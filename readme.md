@@ -167,4 +167,6 @@ For example, the semantic version 2.3.1-RC.2 will be converted to `2.3.1.2002`.
 
 ## Credits
 
-Most of the work is based on https://pabloariasal.github.io/2018/02/19/its-time-to-do-cmake-right/
+This projects integrates work of several other open source projects.
+- Most of the work is based on https://pabloariasal.github.io/2018/02/19/its-time-to-do-cmake-right/
+- Address sanitizer is based on the work of: https://github.com/arsenm/sanitizers-cmake
