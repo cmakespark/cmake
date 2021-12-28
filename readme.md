@@ -164,3 +164,7 @@ An unknown string will result in 5000 and is not recommended.
 More info over the possible strings can be found here https://en.wikipedia.org/wiki/Software_release_life_cycle#Release_candidate.
 
 For example, the semantic version 2.3.1-RC.2 will be converted to `2.3.1.2002`.
+
+## Credits
+
+Most of the work is based on https://pabloariasal.github.io/2018/02/19/its-time-to-do-cmake-right/
