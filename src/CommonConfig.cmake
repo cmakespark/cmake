@@ -112,6 +112,5 @@ include(Doxygen)
 include(GetGitRevisionDescription)
 include(GetVersionFromGitTag)
 include(AddResourceInfo)
-include(manifest/AddManifest)
 include(Methods)
 

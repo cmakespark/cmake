@@ -23,9 +23,6 @@ set(SOURCES
     DeployDependentLibraries.cmake
     FindCppcheck.cmake
     GeneratePackage.cmake
-    manifest/AddManifest.cmake
-    manifest/dll.manifest.in
-    manifest/exe.manifest.in
     resource.rc.in
     coverage-check.sh)
 
