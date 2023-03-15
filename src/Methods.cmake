@@ -237,7 +237,7 @@ endmacro(createlib)
 macro(createapp)
     cmake_parse_arguments(
         CREATEAPP # prefix of output variables
-        "CONSOLE;GENERATE_PACKAGE;REQUIRE_ADMINISTRATOR" # list of names of the boolean arguments (only defined ones will be true)
+        "CONSOLE;GENERATE_PACKAGE;REQUIRE_ADMINISTRATOR;UI_ACCESS" # list of names of the boolean arguments (only defined ones will be true)
         "NAME;NAMESPACE;VERSION" # list of names of mono-valued arguments
         "SOURCES;HEADERS;DEPS" # list of names of multi-valued arguments (output variables are lists)
         ${ARGN} # arguments of the function to parse, here we take the all original ones
@@ -327,7 +327,7 @@ macro(createapp)
             set_target_properties(${CREATEAPP_NAME} PROPERTIES LINK_FLAGS "/MANIFESTUAC:\"level='requireAdministrator' uiAccess='false'\"")
         endif()
     else(${CREATEAPP_REQUIRE_ADMINISTRATOR})
-        add_manifest(${CREATEAPP_NAME} BIN)
+        add_manifest(${CREATEAPP_NAME} BIN ${CREATEAPP_UI_ACCESS})
     endif(${CREATEAPP_REQUIRE_ADMINISTRATOR})
 
     # Output Path for the non-config build (i.e. mingw)

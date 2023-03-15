@@ -2,7 +2,7 @@
 
 set(MY_DIR ${CMAKE_CURRENT_LIST_DIR})
 
-macro(add_manifest PROJECT TYPE)
+macro(add_manifest PROJECT TYPE UI_ACCESS)
 if(CMAKE_BUILD_TYPE MATCHES Release)
     if(WIN32 AND NOT UNIX)
         # Search for the mt binary
@@ -20,7 +20,7 @@ if(CMAKE_BUILD_TYPE MATCHES Release)
                 set(MANIFEST_FILE_OUT ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.exe.manifest)
             endif()
 
-            # fill in the appropriate information into dll.manifest
+            # fill in the appropriate information into manifest
             configure_file(${MANIFEST_FILE_IN} ${MANIFEST_FILE_OUT})
 
             add_custom_command(
