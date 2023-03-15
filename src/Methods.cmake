@@ -321,14 +321,21 @@ macro(createapp)
                       ${CREATEAPP_NAME}
                       ${CREATEAPP_NAME}
                       ${CREATEAPP_SOURCES})
-	  
+
+    # UAC level 
+    set(UAC_LEVEL "asInvoker")
     if(${CREATEAPP_REQUIRE_ADMINISTRATOR})
-        if(WIN32 AND NOT UNIX)
-            set_target_properties(${CREATEAPP_NAME} PROPERTIES LINK_FLAGS "/MANIFESTUAC:\"level='requireAdministrator' uiAccess='false'\"")
-        endif()
-    else(${CREATEAPP_REQUIRE_ADMINISTRATOR})
-        add_manifest(${CREATEAPP_NAME} BIN ${CREATEAPP_UI_ACCESS})
+      set(UAC_LEVEL "requireAdministrator")
     endif(${CREATEAPP_REQUIRE_ADMINISTRATOR})
+    
+    set(UI_ACCESS "false")
+    if(${CREATEAPP_UI_ACCESS})
+      set(UI_ACCESS "true")
+    endif(${CREATEAPP_UI_ACCESS})
+    
+    if(WIN32 AND NOT UNIX)
+      set_target_properties(${CREATEAPP_NAME} PROPERTIES LINK_FLAGS "/MANIFESTUAC:\"level='${UAC_LEVEL}' uiAccess='${UI_ACCESS}'\"")
+    endif(WIN32 AND NOT UNIX)
 
     # Output Path for the non-config build (i.e. mingw)
     set_target_properties(${CREATEAPP_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
