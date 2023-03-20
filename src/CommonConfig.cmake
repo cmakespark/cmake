@@ -11,15 +11,15 @@ endif()
 
 # Usage of Qt libraries (optional)
 # --------------------------------
-find_package(Qt5Core QUIET)
-if (Qt5Core_FOUND)
+find_package(Qt${QT_MAJOR_VERSION_REQUIRED}Core QUIET)
+if (Qt${QT_MAJOR_VERSION_REQUIRED}Core_FOUND)
     # Instruct CMake to run moc automatically when needed.
     set(CMAKE_AUTOMOC ON)
     # let CMake decide which classes need to be rcc'ed by qmake (Qt)
     set(CMAKE_AUTORCC ON)
     # let CMake decide which classes need to be uic'ed by qmake (Qt)
     set(CMAKE_AUTOUIC ON)
-endif (Qt5Core_FOUND)
+endif (Qt${QT_MAJOR_VERSION_REQUIRED}Core_FOUND)
 
 # Usage of CMake Packages
 # -----------------------
@@ -73,10 +73,10 @@ endif(WIN32)
 enable_testing()
 list(APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
 
-find_package(Qt5Core QUIET)
-if (Qt5Core_FOUND)
+find_package(Qt${QT_MAJOR_VERSION_REQUIRED}Core QUIET)
+if (Qt${QT_MAJOR_VERSION_REQUIRED}Core_FOUND)
     include(AddQtTest)
-endif (Qt5Core_FOUND)
+endif (Qt${QT_MAJOR_VERSION_REQUIRED}Core_FOUND)
 if (MANUAL_TESTS_ENABLED)
   message(STATUS "Manual tests are enabled")
   add_definitions(-DMANUAL_TESTS_ENABLED)
