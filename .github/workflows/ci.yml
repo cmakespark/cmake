@@ -19,7 +19,7 @@ jobs:
     steps:
 
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Cache Qt
       id: cache-qt
@@ -50,7 +50,7 @@ jobs:
       run: cmake --build build --target cmakespark
 
     - name: Upload cmakespark.zip
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: cmakespark.zip
         path: build/cmakespark.zip
