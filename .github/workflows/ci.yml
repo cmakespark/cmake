@@ -19,18 +19,19 @@ jobs:
     steps:
 
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Cache Qt
       id: cache-qt
-      uses: actions/cache@v1
+      uses: actions/cache@v3
       with:
         path: ../Qt
         key: ${{ runner.os }}-QtCache
 
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2
+      uses: jurplel/install-qt-action@v3
       with:
+        version: '6.4.3'
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
 
     - name: Configure
@@ -49,7 +50,7 @@ jobs:
       run: cmake --build build --target cmakespark
 
     - name: Upload cmakespark.zip
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: cmakespark.zip
         path: build/cmakespark.zip
