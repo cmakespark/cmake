@@ -8,7 +8,6 @@ IF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
    SET(CMAKE_BUILD_TYPE RelWithDebInfo)
 ENDIF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 
-
 if(CMAKE_COMPILER_IS_GNUCXX)
     set(COMPILER_FLAGS
                     "-std=c++11"
@@ -86,7 +85,6 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     set(COMPILER_FLAGS
-                        "-stdlib=libc++"
                         "-std=c++11"
                         "-Wall"                             # turn on all warnings
                         "-Wpedantic"
