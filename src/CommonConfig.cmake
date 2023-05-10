@@ -85,8 +85,11 @@ endif()
 # Code analysis with cppcheck
 include(Cppcheck)
 
-# Code coverage with gcov
-include(CodeCoverage)
+# Code coverage (credits: https://github.com/RWTH-HPC/CMake-codecov)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(ENABLE_COVERAGE ON)
+endif()
+find_package(codecov)
 
 # Common compiler flags
 include(CompilerFlags)
@@ -113,4 +116,3 @@ include(GetGitRevisionDescription)
 include(GetVersionFromGitTag)
 include(AddResourceInfo)
 include(Methods)
-
