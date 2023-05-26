@@ -7,9 +7,9 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 macro(add_qt_test TEST_NAME SRCS)
-    find_package(Qt${QT_MAJOR_VERSION_REQUIRED}Test REQUIRED)
+    find_package(Qt6Test REQUIRED)
     add_executable(${TEST_NAME} ${SRCS})
-    target_link_libraries(${TEST_NAME} PUBLIC Qt${QT_MAJOR_VERSION_REQUIRED}::Test)
+    target_link_libraries(${TEST_NAME} PUBLIC Qt6::Test)
 
     if(VALGRIND)
         add_test(NAME ${TEST_NAME} COMMAND ${VALGRIND} --error-exitcode=1 --leak-check=full ${VALGRIND_OPTS} $<TARGET_FILE:${TEST_NAME}>)
@@ -20,9 +20,9 @@ endmacro()
 
 option(MANUAL_TESTS_ENABLED "Enable manual tests" OFF)
 macro(add_manual_qt_test TEST_NAME SRCS)
-    find_package(Qt${QT_MAJOR_VERSION_REQUIRED}Test REQUIRED)
+    find_package(Qt6Test REQUIRED)
     add_executable(${TEST_NAME} ${SRCS})
-    target_link_libraries(${TEST_NAME} PUBLIC Qt${QT_MAJOR_VERSION_REQUIRED}::Test)
+    target_link_libraries(${TEST_NAME} PUBLIC Qt6::Test)
 
     if(DEFINED MANUAL_TESTS_ENABLED)
         if(${MANUAL_TESTS_ENABLED})
