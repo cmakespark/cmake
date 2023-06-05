@@ -201,7 +201,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
                         "/GS"
                         "/sdl"
                         "/Wv:18"    # disable warnings introduced in this compiler version
-                        "/wd4071"   # Workaround fix: disable potentially unitialized local variable Qt6.4.3 (https://bugreports.qt.io/browse/QTBUG-114230)
+                        "/wd4701"   # Workaround fix: disable potentially unitialized local variable Qt6.4.3 (https://bugreports.qt.io/browse/QTBUG-114230)
     )
 endif()
 
