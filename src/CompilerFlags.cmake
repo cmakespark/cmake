@@ -70,11 +70,11 @@ if(CMAKE_COMPILER_IS_GNUCXX)
                     "-pie -fPIE"
                     "-Wl,-z,noexecstack"
     )
-    
+
     if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 8.0)
         set(COMPILER_FLAGS "${COMPILER_FLAGS}" "-fcf-protection=none")
     endif()
-    
+
     if(WIN32)
         # Fix for using LxCan sensor SDK
         # Since LxNative.dll uses stdcall convention, MinGW expects @.. decoration of the exposed functions,
@@ -201,10 +201,11 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
                         "/GS"
                         "/sdl"
                         "/Wv:18"    # disable warnings introduced in this compiler version
+                        "/wd4071"   # Workaround fix: disable potentially unitialized local variable Qt6.4.3 (https://bugreports.qt.io/browse/QTBUG-114230)
     )
 endif()
 
-# Allow workarounds for specific frameworks 
+# Allow workarounds for specific frameworks
 if(CMAKE_COMPILER_IS_GNUCXX OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang"))
     if (NOT DEFINED ALLOW_EXCEPTIONS)
         option(ALLOW_EXCEPTIONS "Allow exceptions" OFF)
