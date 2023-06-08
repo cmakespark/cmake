@@ -32,7 +32,7 @@ jobs:
       uses: jurplel/install-qt-action@v3
       with:
         version: '6.4.3'
-        #cached: ${{ steps.cache-qt.outputs.cache-hit }}
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
 
     - name: Configure
       run: |
