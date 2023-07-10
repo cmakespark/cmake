@@ -21,6 +21,22 @@ if (Qt6Core_FOUND)
     set(CMAKE_AUTOUIC ON)
 endif (Qt6Core_FOUND)
 
+# Check if minimal compiler versions requirements are met corresponding with Qt
+# --------------------------------
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11.0)
+        message(FATAL_ERROR "GCC version must be at least 11.0")
+    endif()
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11.0)
+        message(FATAL_ERROR "Clang version must be at least 11.0")
+    endif()
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 19.0)
+        message(FATAL_ERROR "Projects in this repo requires the VisualStudio 2015 or higher compiler for Windows builds")
+    endif()
+endif()
+
 # Usage of CMake Packages
 # -----------------------
 include(CMakePackageConfigHelpers)
