@@ -21,7 +21,7 @@ if (Qt6Core_FOUND)
     set(CMAKE_AUTOUIC ON)
 endif (Qt6Core_FOUND)
 
-# Check if minimal compiler versions requirements are met corresponding with Qt
+# Check if minimal compiler versions requirements are met with corresponding with Qt compiler versions
 # --------------------------------
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11.0)
