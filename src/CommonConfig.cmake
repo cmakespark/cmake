@@ -33,7 +33,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     endif()
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 19.0)
-        message(FATAL_ERROR "Projects in this repo requires the VisualStudio 2015 or higher compiler for Windows builds")
+        message(FATAL_ERROR "Projects in this repo requires the VisualStudio 2019 or higher compiler for Windows builds")
     endif()
 endif()
 
