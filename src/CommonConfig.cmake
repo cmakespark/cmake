@@ -19,23 +19,25 @@ if (Qt6Core_FOUND)
     set(CMAKE_AUTORCC ON)
     # let CMake decide which classes need to be uic'ed by qmake (Qt)
     set(CMAKE_AUTOUIC ON)
-endif (Qt6Core_FOUND)
 
-# Check if minimal compiler versions requirements are met with corresponding with Qt compiler versions
-# --------------------------------
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11.0)
-        message(FATAL_ERROR "GCC version must be at least 11.0, current version is ${CMAKE_CXX_COMPILER_VERSION}")
+    # Check if minimal compiler versions requirements are met with corresponding with Qt6 compiler versions
+    # More info: https://doc.qt.io/qt-6/supported-platforms.html
+    # --------------------------------
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11.0)
+            message(FATAL_ERROR "GCC version must be at least 11.0, current version is ${CMAKE_CXX_COMPILER_VERSION}")
+        endif()
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11.0)
+            message(FATAL_ERROR "Clang version must be at least 11.0, current version is ${CMAKE_CXX_COMPILER_VERSION}")
+        endif()
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 19.0)
+            message(FATAL_ERROR "MSVC version must be at least 19.0, current version is ${CMAKE_CXX_COMPILER_VERSION}")
+        endif()
     endif()
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11.0)
-        message(FATAL_ERROR "Clang version must be at least 11.0, current version is ${CMAKE_CXX_COMPILER_VERSION}")
-    endif()
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 19.0)
-        message(FATAL_ERROR "Projects in this repo requires the VisualStudio 2019 or higher compiler for Windows builds, current version is ${CMAKE_CXX_COMPILER_VERSION}")
-    endif()
-endif()
+    
+endif (Qt6Core_FOUND)
 
 # Usage of CMake Packages
 # -----------------------
