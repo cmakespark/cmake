@@ -14,7 +14,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
                     "-Wall"                             # turn on all warnings
                     "-pedantic"
                     "-Wextra"
-                    "-fno-rtti"                         # disable runtime type information
+#                       "-fno-rtti"                          # run time type info; needed on QT 6.8.3
                     "-fuse-cxa-atexit"
                     "-fno-default-inline"
                     "-fvisibility=hidden"               # do not export symbols by default
@@ -89,7 +89,7 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
                         "-Wall"                             # turn on all warnings
                         "-Wpedantic"
                         "-Wextra"
-                        "-fno-rtti"                         # disable runtime type information
+#                       "-fno-rtti"                          # run time type info; needed on QT 6.8.3
                         "-Weffc++"                          # turn on warnings from Effective C++ handbook
                         "-ffor-scope"
                         "-fuse-cxa-atexit"
@@ -196,7 +196,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
                         "/wd4718"   # Workaround for https://bugreports.qt.io/browse/QTBUG-54089
                         "/nologo"
                         "/EHsc-"    # disable exceptions
-                        "/GR-"      # disable RTTI
+#                       "/GR-"       # run time type info; needed on QT 6.8.3
                         "/DyNAMICBASE"
                         "/GS"
                         "/sdl"
