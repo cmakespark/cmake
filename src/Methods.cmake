@@ -131,6 +131,8 @@ macro(createlib)
             target_link_libraries(${CREATELIB_NAME} PUBLIC --coverage)
         endif()
     endif()
+    
+    add_sanitizers(${CREATELIB_NAME})
 
     # Output Path for the non-config build (i.e. mingw)
     set_target_properties(${CREATELIB_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -316,6 +318,8 @@ macro(createapp)
             target_link_libraries(${CREATEAPP_NAME} PUBLIC --coverage)
         endif()
     endif()
+    
+    add_sanitizers(${CREATEAPP_NAME})
 
     add_resource_info(${CREATEAPP_NAME} FALSE ${VERSION_MAJOR} ${VERSION_MINOR} ${VERSION_PATCH}
                       ${CREATEAPP_NAME}
