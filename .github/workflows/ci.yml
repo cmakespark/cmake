@@ -46,6 +46,18 @@ jobs:
     - name: Test
       run: cmake --build build --target ${{ matrix.cfg.test_target }}
 
+  package:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v7
+
+    - name: Configure
+      run: cmake -S . -B build
+
     - name: Package
       run: cmake --build build --target cmakespark
 
