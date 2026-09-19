@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.4.3 FATAL_ERROR)
-project(cmakespark)
+cmake_minimum_required(VERSION 3.16...3.25 FATAL_ERROR)
+project(cmakespark VERSION 2.0.0 LANGUAGES CXX)
 
 add_subdirectory(src)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/src")
