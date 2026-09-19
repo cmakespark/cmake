@@ -47,8 +47,9 @@ if (GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
 		OUTPUT_VARIABLE ${PROJECT_NAME}_VERSION_STRING
 		OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-	#How many commits since last tag
-	execute_process(COMMAND ${GIT_EXECUTABLE} rev-list master ${${PROJECT_NAME}_VERSION_STRING}^..HEAD --count
+	# How many commits since the most recent tag on the current branch.
+	# Using HEAD avoids assuming a repository default branch name such as master or main.
+	execute_process(COMMAND ${GIT_EXECUTABLE} rev-list --count ${${PROJECT_NAME}_VERSION_STRING}..HEAD
 		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 		OUTPUT_VARIABLE ${PROJECT_NAME}_VERSION_AHEAD
 		OUTPUT_STRIP_TRAILING_WHITESPACE)
