@@ -12,10 +12,9 @@ set(SOURCES
     Methods.cmake
     SetOutputDir.cmake
     AddResourceInfo.cmake
-    CodeCoverage.cmake
     Cppcheck.cmake
     Doxygen.cmake
-    FindGcovr.cmake
+    Findcodecov.cmake
     GetGitRevisionDescription.cmake.in
     GetVersionFromGitTag.cmake
     Package.cmake

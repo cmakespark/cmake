@@ -89,6 +89,8 @@ macro(createlib)
         PRIVATE_HEADER "${CREATELIB_PRIVATE_HEADERS}"
     )
 
+    add_coverage(${CREATELIB_NAME})
+
     # Make list of paths where includes can be found.
     foreach(header ${CREATELIB_PUBLIC_HEADERS})
         get_filename_component(dir ${header} REALPATH)
@@ -341,6 +343,8 @@ macro(createapp)
     set_target_properties(${CREATEAPP_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
     set_target_properties(${CREATEAPP_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
     set_target_properties(${CREATEAPP_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+    add_coverage(${CREATEAPP_NAME})
 
     install(TARGETS ${CREATEAPP_NAME} DESTINATION bin)
     
