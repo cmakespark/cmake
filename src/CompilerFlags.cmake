@@ -8,14 +8,13 @@ IF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
    SET(CMAKE_BUILD_TYPE RelWithDebInfo)
 ENDIF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 
-
 if(CMAKE_COMPILER_IS_GNUCXX)
     set(COMPILER_FLAGS
                     "-std=c++11"
                     "-Wall"                             # turn on all warnings
                     "-pedantic"
                     "-Wextra"
-                    "-fno-rtti"                         # disable runtime type information
+#                       "-fno-rtti"                          # run time type info; needed on QT 6.8.3
                     "-fuse-cxa-atexit"
                     "-fno-default-inline"
                     "-fvisibility=hidden"               # do not export symbols by default
@@ -71,11 +70,11 @@ if(CMAKE_COMPILER_IS_GNUCXX)
                     "-pie -fPIE"
                     "-Wl,-z,noexecstack"
     )
-    
+
     if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 8.0)
         set(COMPILER_FLAGS "${COMPILER_FLAGS}" "-fcf-protection=none")
     endif()
-    
+
     if(WIN32)
         # Fix for using LxCan sensor SDK
         # Since LxNative.dll uses stdcall convention, MinGW expects @.. decoration of the exposed functions,
@@ -86,12 +85,11 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     set(COMPILER_FLAGS
-                        "-stdlib=libc++"
                         "-std=c++11"
                         "-Wall"                             # turn on all warnings
                         "-Wpedantic"
                         "-Wextra"
-                        "-fno-rtti"                         # disable runtime type information
+#                       "-fno-rtti"                          # run time type info; needed on QT 6.8.3
                         "-Weffc++"                          # turn on warnings from Effective C++ handbook
                         "-ffor-scope"
                         "-fuse-cxa-atexit"
@@ -191,21 +189,23 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 #                        "/wd4512"   # suppress warning: assignment operator could not be generated
                                     # A fix is planned in Qt 5.4.2 (https://bugreports.qt.io/browse/QTBUG-7233)
                                     # Check later with Qt >= 5.4.2 if warning suppression can be removed
+                        "/wd4702"   # Ignore unreachable code (workaround qtestcase) Qt > 6.4.3
                         "/wd4714"   # suppress warning: marked __forceinline but are not inlined
                                     # Fixed in Qt 5.10.0 (https://bugreports.qt.io/browse/QTBUG-55042)
                                     # Check later with Qt >= 5.10.0 if warning suppression can be removed
                         "/wd4718"   # Workaround for https://bugreports.qt.io/browse/QTBUG-54089
                         "/nologo"
                         "/EHsc-"    # disable exceptions
-                        "/GR-"      # disable RTTI
+#                       "/GR-"       # run time type info; needed on QT 6.8.3
                         "/DyNAMICBASE"
                         "/GS"
                         "/sdl"
                         "/Wv:18"    # disable warnings introduced in this compiler version
+                        "/wd4701"   # Workaround fix: disable potentially unitialized local variable Qt6.4.3 (https://bugreports.qt.io/browse/QTBUG-114230)
     )
 endif()
 
-# Allow workarounds for specific frameworks 
+# Allow workarounds for specific frameworks
 if(CMAKE_COMPILER_IS_GNUCXX OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang"))
     if (NOT DEFINED ALLOW_EXCEPTIONS)
         option(ALLOW_EXCEPTIONS "Allow exceptions" OFF)

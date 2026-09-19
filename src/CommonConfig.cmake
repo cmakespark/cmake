@@ -11,15 +11,15 @@ endif()
 
 # Usage of Qt libraries (optional)
 # --------------------------------
-find_package(Qt5Core QUIET)
-if (Qt5Core_FOUND)
+find_package(Qt6Core QUIET)
+if (Qt6Core_FOUND)
     # Instruct CMake to run moc automatically when needed.
     set(CMAKE_AUTOMOC ON)
     # let CMake decide which classes need to be rcc'ed by qmake (Qt)
     set(CMAKE_AUTORCC ON)
     # let CMake decide which classes need to be uic'ed by qmake (Qt)
     set(CMAKE_AUTOUIC ON)
-endif (Qt5Core_FOUND)
+endif (Qt6Core_FOUND)
 
 # Usage of CMake Packages
 # -----------------------
@@ -50,8 +50,9 @@ if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     # not using Visual Studio C++
     add_definitions(-Wall -fvisibility=hidden)
 endif()
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -71,11 +72,12 @@ endif(WIN32)
 # Switch testing on
 # -----------------
 enable_testing()
+list(APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
 
-find_package(Qt5Core QUIET)
-if (Qt5Core_FOUND)
+find_package(Qt6Core QUIET)
+if (Qt6Core_FOUND)
     include(AddQtTest)
-endif (Qt5Core_FOUND)
+endif (Qt6Core_FOUND)
 if (MANUAL_TESTS_ENABLED)
   message(STATUS "Manual tests are enabled")
   add_definitions(-DMANUAL_TESTS_ENABLED)
@@ -115,6 +117,5 @@ include(Doxygen)
 include(GetGitRevisionDescription)
 include(GetVersionFromGitTag)
 include(AddResourceInfo)
-include(manifest/AddManifest)
 include(Methods)
 

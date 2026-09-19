@@ -11,19 +11,20 @@ jobs:
     steps:
 
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v7
 
     - name: Cache Qt
       id: cache-qt
-      uses: actions/cache@v1
+      uses: actions/cache@v6
       with:
         path: ../Qt
-        key: ${{ runner.os }}-QtCache
+        key: ${{ runner.os }}-Qt-6.10
 
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2
+      uses: jurplel/install-qt-action@v4
       with:
-        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+        version: '6.10'
+        cache: ${{ steps.cache-qt.outputs.cache-hit }}
 
     - name: Configure
       run: |
