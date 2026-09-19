@@ -1,3 +1,7 @@
+cmake_minimum_required(VERSION 3.16...3.25)
+
+project(cmakespark VERSION 3.2.0 LANGUAGES CXX)
+
 set(SOURCES
     AddQtTest.cmake
     config.cmake.in
@@ -22,9 +26,6 @@ set(SOURCES
     DeployDependentLibraries.cmake
     FindCppcheck.cmake
     GeneratePackage.cmake
-    manifest/AddManifest.cmake
-    manifest/dll.manifest.in
-    manifest/exe.manifest.in
     resource.rc.in
     coverage-check.sh)
 
