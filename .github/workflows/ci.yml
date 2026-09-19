@@ -50,7 +50,7 @@ jobs:
       run: cmake --build build --target cmakespark
 
     - name: Upload cmakespark.zip
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v7
       with:
         name: cmakespark.zip
         path: build/cmakespark.zip
